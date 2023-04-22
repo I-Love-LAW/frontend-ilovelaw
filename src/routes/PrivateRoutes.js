@@ -1,4 +1,4 @@
-import {Route, Routes, Navigate} from 'react-router-dom'
+import {Route, Routes } from 'react-router-dom'
 import NavbarComponent from "../components/Navbar";
 import React from "react";
 
@@ -8,8 +8,7 @@ const PrivateRoutes = () => {
       <>
           <NavbarComponent></NavbarComponent>
           <Routes>
-              <Route>
-              </Route>
+              <Route index path='*' element={<></>} />
           </Routes>
       </>
   )

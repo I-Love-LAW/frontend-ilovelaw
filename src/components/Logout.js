@@ -4,11 +4,13 @@ import UserService from "../services/UserService";
 import {useAuth} from "./auth";
 
 export function Logout() {
-    const {auth} = useAuth()
-
+    const {auth, logout, saveAuth} = useAuth()
     useEffect(() => {
         const api = async () => {
+            console.log(auth.username)
             await UserService.logout(auth.username)
+            await logout()
+            await saveAuth(undefined)
             document.location.reload()
         }
 

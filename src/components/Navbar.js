@@ -1,8 +1,6 @@
 import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
-import Form from 'react-bootstrap/Form';
-import Button from 'react-bootstrap/Button';
 
 import React from "react";
 import { useNavigate  } from "react-router-dom";
@@ -23,9 +21,9 @@ function NavbarComponent() {
                             <Nav.Link href="/">Home</Nav.Link>
                         </Nav>
                         {currentUser &&
-                            <Form className="d-flex">
-                                <Button variant="danger" onClick={() => navigate("/logout")}>Logout</Button>
-                            </Form>
+                            <div className="d-flex">
+                                <button type='button' className="btn btn-danger" onClick={() => navigate("/logout")}>Logout</button>
+                            </div>
                         }
                     </Navbar.Collapse>
                 </Container>
