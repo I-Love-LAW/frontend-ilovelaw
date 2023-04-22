@@ -81,7 +81,7 @@ export function LoginPage() {
                                      <label className='form-label fs-6 fw-bolder text-dark'>Username</label>
                                      <input
                                         placeholder='Username'
-                                        {...formik.getFieldProps('email')}
+                                        {...formik.getFieldProps('username')}
                                         className={clsx(
                                             'form-control bg-transparent',
                                             {'is-invalid': formik.touched.username && formik.errors.username},

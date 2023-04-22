@@ -1,9 +1,8 @@
 /* eslint-disable react/jsx-no-target-blank */
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import {useState, useEffect} from 'react'
+import {useState} from 'react'
 import * as Yup from 'yup'
 import clsx from 'clsx'
-import { Link } from "react-router-dom";
 import {useFormik} from 'formik'
 import UserService from "../../services/UserService";
 import { useAuth } from '.'
@@ -12,30 +11,25 @@ const initialValues = {
     name: '',
     username: '',
     password: '',
-    changepassword: '',
-    acceptTerms: false,
+    changepassword: ''
 }
 
 const registrationSchema = Yup.object().shape({
     name: Yup.string()
         .min(3, 'Minimum 3 symbols')
         .max(50, 'Maximum 50 symbols')
-        .required('First Name is required'),
+        .required('Name is required'),
     username: Yup.string()
         .min(3, 'Minimum 3 symbols')
         .max(50, 'Maximum 50 symbols')
         .required('Username is required'),
     password: Yup.string()
-        .min(3, 'Minimum 3 symbols')
+        .min(6, 'Minimum 6 symbols')
         .max(50, 'Maximum 50 symbols')
         .required('Password is required'),
     changepassword: Yup.string()
         .required('Password confirmation is required')
-        .when('password', {
-            is: (val) => (!!(val && val.length > 0)),
-            then: Yup.string().oneOf([Yup.ref('password')], "Password and Confirm Password didn't match"),
-        }),
-    acceptTerms: Yup.bool().required('You must accept the terms and conditions'),
+        .oneOf([Yup.ref('password')], "Password and Confirm Password didn't match"),
 })
 
 const RegistrationPage = () => {
@@ -50,7 +44,7 @@ const RegistrationPage = () => {
             try {
                 await UserService.register(
                     values.username,
-                    values.nama,
+                    values.name,
                     values.password
                 )
                 const {data: authData} = await UserService.login(values.username, values.password)
@@ -69,8 +63,9 @@ const RegistrationPage = () => {
             <div className="p-5 bg-image"
                  style={{
                      backgroundImage: "url('https://mdbootstrap.com/img/new/textures/full/171.jpg')",
-                     height: "300px"
-                 }}></div>
+                     height: "200px"
+                 }}>
+            </div>
 
             <div className="card mx-4 mx-md-5 shadow-5-strong"
                  style={{
@@ -83,61 +78,164 @@ const RegistrationPage = () => {
                     <div className="row d-flex justify-content-center">
                         <div className="col-lg-8">
                             <h2 className="fw-bold mb-5">Sign up now</h2>
-                            <form>
-                                <div className="row">
+                            <form
+                                onSubmit={formik.handleSubmit}
+                                noValidate
+                                id='kt_login_signin_form'>
+
+                                {formik.status && (
+                                    <div className='mb-lg-15 alert alert-danger'>
+                                        <div className='alert-text font-weight-bold'>{formik.status}</div>
+                                    </div>
+                                )}
+
+                                <div className="row mb-3">
                                     <div className="col-md-6 mb-4">
                                         <div className="form-outline">
-                                            <input type="text" id="form3Example1" className="form-control" />
-                                            <label className="form-label" htmlFor="form3Example1">First name</label>
+                                            <div className='fv-row mb-10'>
+                                                <div className='d-flex justify-content-between mt-n5'>
+                                                    <div className='d-flex flex-stack mb-2'>
+                                                        {/* begin::Label */}
+                                                        <label className='form-label fw-bold text-dark fs-6 mb-0'>Name</label>
+                                                        {/* end::Label */}
+                                                    </div>
+                                                </div>
+                                                <input
+                                                    placeholder='Name'
+                                                    {...formik.getFieldProps('name')}
+                                                    className={clsx(
+                                                        'form-control bg-transparent',
+                                                        {'is-invalid': formik.touched.name && formik.errors.name},
+                                                        {'is-valid': formik.touched.name && !formik.errors.name}
+                                                    )}
+                                                    type='text'
+                                                    autoComplete='off'
+                                                />
+                                                {formik.touched.name && formik.errors.name && (
+                                                    <div className='fv-plugins-message-container'>
+                                                        <div className='fv-help-block'>
+                                                            <span role='alert'>{formik.errors.name}</span>
+                                                        </div>
+                                                    </div>
+                                                )}
+                                            </div>
                                         </div>
                                     </div>
                                     <div className="col-md-6 mb-4">
                                         <div className="form-outline">
-                                            <input type="text" id="form3Example2" className="form-control" />
-                                            <label className="form-label" htmlFor="form3Example2">Last name</label>
+                                            <div className='fv-row mb-10'>
+                                                <div className='d-flex justify-content-between mt-n5'>
+                                                    <div className='d-flex flex-stack mb-2'>
+                                                        {/* begin::Label */}
+                                                        <label className='form-label fw-bold text-dark fs-6 mb-0'>Username</label>
+                                                        {/* end::Label */}
+                                                    </div>
+                                                </div>
+                                                <input
+                                                    placeholder='Username'
+                                                    {...formik.getFieldProps('username')}
+                                                    className={clsx(
+                                                        'form-control bg-transparent',
+                                                        {'is-invalid': formik.touched.username && formik.errors.username},
+                                                        {'is-valid': formik.touched.username && !formik.errors.username}
+                                                    )}
+                                                    type='text'
+                                                    autoComplete='off'
+                                                />
+                                                {formik.touched.username && formik.errors.username && (
+                                                    <div className='fv-plugins-message-container'>
+                                                        <div className='fv-help-block'>
+                                                            <span role='alert'>{formik.errors.username}</span>
+                                                        </div>
+                                                    </div>
+                                                )}
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
 
-                                <div className="form-outline mb-4">
-                                    <input type="email" id="form3Example3" className="form-control" />
-                                    <label className="form-label" htmlFor="form3Example3">Email address</label>
+                                <div className="row mb-4">
+                                    <div className="col-md-6 mb-4">
+                                        <div className="form-outline">
+                                            <div className='fv-row mb-10'>
+                                                <div className='d-flex justify-content-between mt-n5'>
+                                                    <div className='d-flex flex-stack mb-2'>
+                                                        {/* begin::Label */}
+                                                        <label className='form-label fw-bold text-dark fs-6 mb-0'>Password</label>
+                                                        {/* end::Label */}
+                                                    </div>
+                                                </div>
+                                                <input
+                                                    type='password'
+                                                    placeholder='Password'
+                                                    autoComplete='off'
+                                                    {...formik.getFieldProps('password')}
+                                                    className={clsx(
+                                                        'form-control bg-transparent',
+                                                        {'is-invalid': formik.touched.password && formik.errors.password},
+                                                        {'is-valid': formik.touched.password && !formik.errors.password}
+                                                    )}
+                                                />
+                                                {formik.touched.password && formik.errors.password && (
+                                                    <div className='fv-plugins-message-container'>
+                                                        <div className='fv-help-block'>
+                                                            <span role='alert'>{formik.errors.password}</span>
+                                                        </div>
+                                                    </div>
+                                                )}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="col-md-6 mb-4">
+                                        <div className="form-outline">
+                                            <div className='fv-row mb-10'>
+                                                <div className='d-flex justify-content-between mt-n5'>
+                                                    <div className='d-flex flex-stack mb-2'>
+                                                        {/* begin::Label */}
+                                                        <label className='form-label fw-bold text-dark fs-6 mb-0'>Password Confirmation</label>
+                                                        {/* end::Label */}
+                                                    </div>
+                                                </div>
+                                                <input
+                                                    type='password'
+                                                    placeholder='Password confirmation'
+                                                    autoComplete='off'
+                                                    {...formik.getFieldProps('changepassword')}
+                                                    className={clsx(
+                                                        'form-control bg-transparent',
+                                                        {'is-invalid': formik.touched.changepassword && formik.errors.changepassword},
+                                                        {'is-valid': formik.touched.changepassword && !formik.errors.changepassword}
+                                                    )}
+                                                />
+                                                {formik.touched.changepassword && formik.errors.changepassword && (
+                                                    <div className='fv-plugins-message-container'>
+                                                        <div className='fv-help-block'>
+                                                            <span role='alert'>{formik.errors.changepassword}</span>
+                                                        </div>
+                                                    </div>
+                                                )}
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
 
-                                <div className="form-outline mb-4">
-                                    <input type="password" id="form3Example4" className="form-control" />
-                                    <label className="form-label" htmlFor="form3Example4">Password</label>
-                                </div>
-
-                                <div className="form-check d-flex justify-content-center mb-4">
-                                    <input className="form-check-input me-2" type="checkbox" value="" id="form2Example33" checked />
-                                    <label className="form-check-label" htmlFor="form2Example33">
-                                        Subscribe to our newsletter
-                                    </label>
-                                </div>
-
-                                <button type="submit" className="btn btn-primary btn-block mb-4">
-                                    Sign up
-                                </button>
-
-                                <div className="text-center">
-                                    <p>or sign up with:</p>
-                                    <button type="button" className="btn btn-link btn-floating mx-1">
-                                        <i className="fab fa-facebook-f"></i>
-                                    </button>
-
-                                    <button type="button" className="btn btn-link btn-floating mx-1">
-                                        <i className="fab fa-google"></i>
-                                    </button>
-
-                                    <button type="button" className="btn btn-link btn-floating mx-1">
-                                        <i className="fab fa-twitter"></i>
-                                    </button>
-
-                                    <button type="button" className="btn btn-link btn-floating mx-1">
-                                        <i className="fab fa-github"></i>
+                                <div className='d-grid mb-10 mt-5'>
+                                    <button
+                                        type='submit'
+                                        id='kt_sign_in_submit'
+                                        className='btn btn-primary'
+                                        disabled={formik.isSubmitting || !formik.isValid}
+                                    >
+                                        {!loading && <span className='indicator-label'>Register</span>}
+                                        {loading && (
+                                            <span className='indicator-progress' style={{display: 'block'}}>
+                                              Please wait...
+                                              <span className='spinner-border spinner-border-sm align-middle ms-2'></span>
+                                            </span>
+                                        )}
                                     </button>
                                 </div>
+
                             </form>
                         </div>
                     </div>
