@@ -1,1 +1,5 @@
-export const AUTH_BACKEND_URL = "http://localhost:8080/";
+export function AUTH_BACKEND_URL (url) {
+    return (
+        "http://localhost:8080/" + url
+    )
+}

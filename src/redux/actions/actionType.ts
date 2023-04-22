@@ -1,0 +1,8 @@
+enum ActionType {
+    SESSION = 'SESSION',
+    SET_AUTH_TOKEN = 'SET_AUTH_TOKEN',
+    REMOVE_AUTH_TOKEN = 'REMOVE_AUTH_TOKEN',
+    UPDATE_ACCESS_TOKEN = 'UPDATE_ACCESS_TOKEN'
+}
+
+export {ActionType}

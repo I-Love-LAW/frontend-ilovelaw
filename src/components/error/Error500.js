@@ -17,12 +17,12 @@ const Error500: FC = () => {
       {/* begin::Illustration */}
       <div className='mb-11'>
         <img
-          src='src/components'
+          src='src/index'
           className='mw-100 mh-300px theme-light-show'
           alt=''
         />
         <img
-          src='src/components'
+          src='src/index'
           className='mw-100 mh-300px theme-dark-show'
           alt=''
         />

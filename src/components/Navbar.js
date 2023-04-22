@@ -5,11 +5,12 @@ import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 
 import React from "react";
-import User from "../services/User";
 import { useNavigate  } from "react-router-dom";
+import {useAuth} from "./auth";
 
 function NavbarComponent() {
-    const currentUser = User()
+    const {auth} = useAuth()
+    const currentUser = auth?.username
     let navigate  = useNavigate();
 
     return (

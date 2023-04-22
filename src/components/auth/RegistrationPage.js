@@ -6,34 +6,25 @@ import clsx from 'clsx'
 import { Link } from "react-router-dom";
 import {useFormik} from 'formik'
 import UserService from "../../services/UserService";
+import { useAuth } from '.'
 
 const initialValues = {
-    firstname: '',
-    lastname: '',
+    name: '',
     username: '',
-    email: '',
     password: '',
     changepassword: '',
     acceptTerms: false,
 }
 
 const registrationSchema = Yup.object().shape({
-    firstname: Yup.string()
+    name: Yup.string()
         .min(3, 'Minimum 3 symbols')
         .max(50, 'Maximum 50 symbols')
         .required('First Name is required'),
-    lastname: Yup.string()
-        .min(3, 'Minimum 3 symbols')
-        .max(50, 'Maximum 50 symbols')
-        .required('Last Name is required'),
     username: Yup.string()
         .min(3, 'Minimum 3 symbols')
         .max(50, 'Maximum 50 symbols')
         .required('Username is required'),
-    email: Yup.string()
-        .min(3, 'Minimum 3 symbols')
-        .max(50, 'Maximum 50 symbols')
-        .required('Email is required'),
     password: Yup.string()
         .min(3, 'Minimum 3 symbols')
         .max(50, 'Maximum 50 symbols')
@@ -41,7 +32,7 @@ const registrationSchema = Yup.object().shape({
     changepassword: Yup.string()
         .required('Password confirmation is required')
         .when('password', {
-            is: (val: string) => (!!(val && val.length > 0)),
+            is: (val) => (!!(val && val.length > 0)),
             then: Yup.string().oneOf([Yup.ref('password')], "Password and Confirm Password didn't match"),
         }),
     acceptTerms: Yup.bool().required('You must accept the terms and conditions'),
@@ -49,6 +40,8 @@ const registrationSchema = Yup.object().shape({
 
 const RegistrationPage = () => {
     const [loading, setLoading] = useState(false)
+    const {saveAuth} = useAuth()
+
     const formik = useFormik({
         initialValues,
         validationSchema: registrationSchema,
@@ -60,8 +53,8 @@ const RegistrationPage = () => {
                     values.nama,
                     values.password
                 )
-                await UserService.login(values.username, values.password)
-                document.location.reload()
+                const {data: authData} = await UserService.login(values.username, values.password)
+                saveAuth(authData)
             } catch (error) {
                 console.error(error)
                 setStatus('The registration details is incorrect')

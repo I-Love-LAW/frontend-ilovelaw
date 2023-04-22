@@ -5,6 +5,7 @@ import clsx from 'clsx'
 import { Link } from "react-router-dom";
 import {useFormik} from 'formik'
 import UserService from "../../services/UserService";
+import { useAuth } from '.'
 
 const loginSchema = Yup.object().shape({
     username: Yup.string()
@@ -24,6 +25,7 @@ const initialValues = {
 
 export function LoginPage() {
     const [loading, setLoading] = useState(false)
+    const {saveAuth} = useAuth()
 
     const formik = useFormik({
         initialValues,
@@ -31,10 +33,14 @@ export function LoginPage() {
         onSubmit: async (values, {setStatus, setSubmitting}) => {
             setLoading(true)
             try {
-                await UserService.login(values.username, values.password)
-                document.location.reload()
+                const {data: authData} = await UserService.login(values.username, values.password)
+                saveAuth(authData)
             } catch (error) {
-                setStatus('The login details are incorrect')
+                if (error.response && error.response.status === 401) {
+                    setStatus('Username atau Password salah')
+                } else {
+                    setStatus('Terjadi kesalahan tak terduga, silahkan coba lagi')
+                }
                 setSubmitting(false)
                 setLoading(false)
             }
