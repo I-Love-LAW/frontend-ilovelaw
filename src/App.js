@@ -18,7 +18,7 @@ import {AuthRoutes} from "./routes/AuthRoutes";
 function App() {
     const {auth} = useAuth()
     const currentUser = auth?.username
-    console.log(currentUser)
+
     return (
         <Router>
             <Routes>
