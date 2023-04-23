@@ -7,11 +7,10 @@ export function Logout() {
     const {auth, logout, saveAuth} = useAuth()
     useEffect(() => {
         const api = async () => {
-            console.log(auth.username)
-            await UserService.logout(auth.username)
-            await logout()
-            await saveAuth(undefined)
-            document.location.reload()
+            localStorage.setItem("isFirstLoggedOut", true)
+            UserService.logout(auth.username)
+            logout()
+            saveAuth(undefined)
         }
 
         api()

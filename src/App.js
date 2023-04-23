@@ -34,7 +34,7 @@ function App() {
                         <Route path='*' element={<Navigate to='/auth' />} />
                     </>
                 )}
-                <Route path='*' element={<Navigate to='/' />} />
+                <Route path='*' element={<Navigate to='' />} />
             </Routes>
         </Router>
     )

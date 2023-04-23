@@ -1,11 +1,12 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import {useState} from 'react'
+import React, {useEffect, useState} from 'react'
 import * as Yup from 'yup'
 import clsx from 'clsx'
 import { Link } from "react-router-dom";
 import {useFormik} from 'formik'
 import UserService from "../../services/UserService";
 import { useAuth } from '.'
+import Alert from "react-bootstrap/Alert";
 
 const loginSchema = Yup.object().shape({
     username: Yup.string()
@@ -27,6 +28,25 @@ export function LoginPage() {
     const [loading, setLoading] = useState(false)
     const {saveAuth} = useAuth()
 
+    const [isFirstLoggedOut, setIsFirstLoggedOut] = useState(localStorage.getItem("isFirstLoggedOut"));
+
+    useEffect(() => {
+        if (isFirstLoggedOut) {
+            const timeoutId = setTimeout(() => {
+                localStorage.removeItem("isFirstLoggedOut")
+                setIsFirstLoggedOut(false)
+            }, 10000);
+
+            return () => {
+                clearTimeout(timeoutId);
+            };
+        }
+    }, [isFirstLoggedOut]);
+
+    const handleClose = () => {
+        setIsFirstLoggedOut(false);
+    };
+
     const formik = useFormik({
         initialValues,
         validationSchema: loginSchema,
@@ -35,6 +55,7 @@ export function LoginPage() {
             try {
                 const {data: authData} = await UserService.login(values.username, values.password)
                 saveAuth(authData)
+                localStorage.setItem("isFirstLoggedIn", true)
             } catch (error) {
                 if (error.response && error.response.status === 401) {
                     setStatus('Username atau Password salah')
@@ -49,11 +70,18 @@ export function LoginPage() {
 
     return (
         <section className="text-center">
+            {isFirstLoggedOut && (
+                <Alert className="text-start" variant="success" show={isFirstLoggedOut} onClose={handleClose} dismissible>
+                    <strong>Logout!</strong> Anda berhasil keluar dari sistem.
+                </Alert>
+            )}
+
             <div className="p-5 bg-image"
                  style={{
                      backgroundImage: "url('https://mdbootstrap.com/img/new/textures/full/171.jpg')",
                      height: "200px"
-                 }}></div>
+                 }}>
+            </div>
 
             <div className="card mx-4 mx-md-5 shadow-5-strong"
                  style={{
