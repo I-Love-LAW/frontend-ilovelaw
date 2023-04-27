@@ -1,5 +1,5 @@
 export function AUTH_BACKEND_URL (url) {
     return (
-        "http://localhost:8080/" + url
+        "https://quick-cogency-380114.et.r.appspot.com/" + url
     )
 }
