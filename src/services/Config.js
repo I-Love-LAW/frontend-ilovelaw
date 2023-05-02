@@ -1,5 +1,5 @@
 export function AUTH_BACKEND_URL (url) {
     return (
-        "http://34.123.212.58:8080/" + url
+        "http://34.132.28.235:8080/" + url
     )
 }
