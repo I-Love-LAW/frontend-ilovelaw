@@ -1,7 +1,5 @@
 import Container from 'react-bootstrap/Container';
-import Nav from 'react-bootstrap/Nav';
-import Navbar from 'react-bootstrap/Navbar';
-
+import {Nav, Navbar, NavDropdown} from 'react-bootstrap';
 import React from "react";
 import { useNavigate  } from "react-router-dom";
 import {useAuth} from "./auth";
@@ -13,7 +11,7 @@ function NavbarComponent() {
 
     return (
         <>
-            <Navbar bg="dark" variant="dark">
+            <Navbar bg="blue" variant="dark">
                 <Container>
                     <Navbar.Brand href="/">I Love Law</Navbar.Brand>
                     <Navbar.Collapse id="navbarScroll">
@@ -21,9 +19,15 @@ function NavbarComponent() {
                             <Nav.Link href="/">Home</Nav.Link>
                         </Nav>
                         {currentUser &&
-                            <div className="d-flex">
-                                <button type='button' className="btn btn-danger" onClick={() => navigate("/logout")}>Logout</button>
-                            </div>
+                            <>
+                                <NavDropdown title={currentUser} id="collasible-nav-dropdown" style={{color: 'white', textDecoration: 'none'}}>
+                                    <NavDropdown.Item href="profile">Lihat Profile</NavDropdown.Item>
+                                    <NavDropdown.Divider />
+                                    <NavDropdown.Item onClick={() => navigate("/logout")}>
+                                        Logout
+                                    </NavDropdown.Item>
+                                </NavDropdown>
+                            </>
                         }
                     </Navbar.Collapse>
                 </Container>

@@ -33,9 +33,19 @@ class UserService {
     }
 
     getInfo(username) {
-        const REGISTER_TOKEN_URL = USER_URL + '/' + username
+        const INFO_URL = USER_URL + '/' + username
 
-        return axios.get(REGISTER_TOKEN_URL)
+        return axios.get(INFO_URL)
+    }
+
+    ubahProfile(username, name) {
+        const UPDATE_PROFILE_URL = USER_URL + '/update-profile'
+        const data = {
+            "username": username,
+            "name": name
+        }
+
+        return axios.put(UPDATE_PROFILE_URL, data)
     }
 
     logout(username) {
