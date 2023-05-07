@@ -1,10 +1,12 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import {useState} from 'react'
+import React, {useEffect, useState} from 'react'
 import * as Yup from 'yup'
 import clsx from 'clsx'
 import { Link } from "react-router-dom";
 import {useFormik} from 'formik'
 import UserService from "../../services/UserService";
+import { useAuth } from '.'
+import Alert from "react-bootstrap/Alert";
 
 const loginSchema = Yup.object().shape({
     username: Yup.string()
@@ -24,6 +26,27 @@ const initialValues = {
 
 export function LoginPage() {
     const [loading, setLoading] = useState(false)
+    const {saveAuth} = useAuth()
+
+    const [isFirstLoggedOut, setIsFirstLoggedOut] = useState(localStorage.getItem("isFirstLoggedOut"));
+
+    useEffect(() => {
+        if (isFirstLoggedOut) {
+            const timeoutId = setTimeout(() => {
+                localStorage.removeItem("isFirstLoggedOut")
+                setIsFirstLoggedOut(false)
+            }, 3000);
+
+            return () => {
+                clearTimeout(timeoutId);
+            };
+        }
+    }, [isFirstLoggedOut]);
+
+    const handleClose = () => {
+        localStorage.removeItem("isFirstLoggedOut")
+        setIsFirstLoggedOut(false);
+    };
 
     const formik = useFormik({
         initialValues,
@@ -31,10 +54,15 @@ export function LoginPage() {
         onSubmit: async (values, {setStatus, setSubmitting}) => {
             setLoading(true)
             try {
-                await UserService.login(values.username, values.password)
-                document.location.reload()
+                const {data: authData} = await UserService.login(values.username, values.password)
+                saveAuth(authData)
+                localStorage.setItem("isFirstLoggedIn", true)
             } catch (error) {
-                setStatus('The login details are incorrect')
+                if (error.response && error.response.status === 401) {
+                    setStatus('Username atau Password salah')
+                } else {
+                    setStatus('Terjadi kesalahan tak terduga, silahkan coba lagi')
+                }
                 setSubmitting(false)
                 setLoading(false)
             }
@@ -43,11 +71,18 @@ export function LoginPage() {
 
     return (
         <section className="text-center">
+            {isFirstLoggedOut && (
+                <Alert className="text-start" variant="success" show={isFirstLoggedOut} onClose={handleClose} dismissible>
+                    <strong>Logout!</strong> Anda berhasil keluar dari sistem.
+                </Alert>
+            )}
+
             <div className="p-5 bg-image"
                  style={{
                      backgroundImage: "url('https://mdbootstrap.com/img/new/textures/full/171.jpg')",
                      height: "200px"
-                 }}></div>
+                 }}>
+            </div>
 
             <div className="card mx-4 mx-md-5 shadow-5-strong"
                  style={{
@@ -75,7 +110,7 @@ export function LoginPage() {
                                      <label className='form-label fs-6 fw-bolder text-dark'>Username</label>
                                      <input
                                         placeholder='Username'
-                                        {...formik.getFieldProps('email')}
+                                        {...formik.getFieldProps('username')}
                                         className={clsx(
                                             'form-control bg-transparent',
                                             {'is-invalid': formik.touched.username && formik.errors.username},
