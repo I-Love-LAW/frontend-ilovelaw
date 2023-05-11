@@ -10,7 +10,6 @@ class ConvertService {
     return axios.post(PDF_TO_IMG_URL, data, {
       headers: {
         "Content-Type": "multipart/form-data",
-        responseType: "blob",
       },
     });
   }

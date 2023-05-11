@@ -11,3 +11,29 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.bg-blue {
+  background-color: #283770 !important;
+}
+
+.border-blue {
+  border: var(--bs-border-width) var(--bs-border-style) !important;
+  border-color: #6a84c9 !important;
+}
+
+.btn-blue {
+  --bs-btn-color: #fff !important;
+  --bs-btn-bg: #283770 !important;
+  --bs-btn-border-color: #283770 !important;
+  --bs-btn-hover-color: #fff !important;
+  --bs-btn-hover-bg: #2e407e !important;
+  --bs-btn-hover-border-color: #304282 !important;
+  --bs-btn-focus-shadow-rgb: 60,153,110 !important;
+  --bs-btn-active-color: #fff !important;
+  --bs-btn-active-bg: #304282 !important;
+  --bs-btn-active-border-color: #314383 !important;
+  --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125) !important;
+  --bs-btn-disabled-color: #fff !important;
+  --bs-btn-disabled-bg: #283770 !important;
+  --bs-btn-disabled-border-color: #283770 !important;
+}

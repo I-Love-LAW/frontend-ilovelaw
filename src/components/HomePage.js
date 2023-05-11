@@ -15,7 +15,7 @@ export function HomePage() {
             const timeoutId = setTimeout(() => {
                 localStorage.removeItem("isFirstLoggedIn")
                 setIsFirstLoggedIn(false)
-            }, 10000);
+            }, 3000);
 
             return () => {
                 clearTimeout(timeoutId);
@@ -32,6 +32,7 @@ export function HomePage() {
     }, [username]);
 
     const handleClose = () => {
+        localStorage.removeItem("isFirstLoggedIn")
         setIsFirstLoggedIn(false);
     };
 
