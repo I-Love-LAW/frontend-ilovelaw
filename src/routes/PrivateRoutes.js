@@ -9,14 +9,16 @@ import { ProfilePage } from "../components/ProfilePage";
 const PrivateRoutes = () => {
   return (
     <>
-      <NavbarComponent></NavbarComponent>
-      <Routes>
-        <Route index path="" element={<HomePage />} />
-        <Route index path="convert" element={<ConvertPage />} />
-        <Route index path="history" element={<HistoryPage />} />
-        <Route index path="profile" element={<ProfilePage />} />
-        <Route path="*" element={<Navigate to="" />} />
-      </Routes>
+        <NavbarComponent></NavbarComponent>
+        <Routes>
+            <Route index path="" element={<HomePage />} />
+            <Route index path="convert" element={<ConvertPage />} />
+            <Route index path="history" element={<HistoryPage />} />
+            <Route index path="profile" element={<ProfilePage />} />
+            <Route index path="payment" element={<></>} />
+            <Route index path="notification" element={<></>} />
+            <Route path="*" element={<Navigate to="" />} />
+        </Routes>
     </>
   );
 };
