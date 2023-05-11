@@ -37,3 +37,8 @@ code {
   --bs-btn-disabled-bg: #283770 !important;
   --bs-btn-disabled-border-color: #283770 !important;
 }
+
+.dropdown-item.active, .dropdown-item:active {
+  color: #000 !important;
+  background-color: #ddebff !important;
+}
