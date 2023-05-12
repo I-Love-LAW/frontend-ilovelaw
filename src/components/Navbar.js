@@ -17,8 +17,9 @@ function NavbarComponent() {
                         {currentUser &&
                             <>
                                 <Nav className="me-auto">
-                                    <Nav.Link exact as={NavLink} to="/" activeClassName="active">Home</Nav.Link>
+                                    <Nav.Link as={NavLink} to="/" activeClassName="active">Home</Nav.Link>
                                     <Nav.Link as={NavLink} to="convert" activeClassName="active">Convert</Nav.Link>
+                                    <Nav.Link as={NavLink} to="history" activeClassName="active">History</Nav.Link>
                                     <Nav.Link as={NavLink} to="notification" activeClassName="active">Notification</Nav.Link>
                                 </Nav>
                                 <NavDropdown title={currentUser} id="collasible-nav-dropdown" style={{color: 'white', textDecoration: 'none'}}>

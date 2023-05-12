@@ -5,6 +5,7 @@ import { HomePage } from "../components/HomePage";
 import { ConvertPage } from "../components/ConvertPage";
 import { HistoryPage } from "../components/HistoryPage";
 import { ProfilePage } from "../components/ProfilePage";
+import FooterComponent from "../components/Footer";
 
 const PrivateRoutes = () => {
   return (
@@ -19,6 +20,7 @@ const PrivateRoutes = () => {
             <Route index path="notification" element={<></>} />
             <Route path="*" element={<Navigate to="" />} />
         </Routes>
+        <FooterComponent></FooterComponent>
     </>
   );
 };
