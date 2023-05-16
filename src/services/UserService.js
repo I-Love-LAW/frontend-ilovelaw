@@ -55,6 +55,16 @@ class UserService {
         }
         return axios.post(LOGOUT_TOKEN_URL, data)
     }
+
+    upgradeMembership(username) {
+        const UPGRADE_MEMBERSHIP_URL = USER_URL + '/upgrade-membership?username=' + username
+        return axios.put(UPGRADE_MEMBERSHIP_URL)
+    }
+
+    getConvertEligibility(username, totalConversion) {
+        const CONVERT_ELIGIBILITY = USER_URL + '/can-convert?username=' + username + '&totalConversion=' + totalConversion
+        return axios.get(CONVERT_ELIGIBILITY)
+    }
 }
 
 export default new UserService();

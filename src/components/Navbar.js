@@ -23,7 +23,7 @@ function NavbarComponent() {
                                 </Nav>
                                 <NavDropdown title={currentUser} id="collasible-nav-dropdown" style={{color: 'white', textDecoration: 'none'}}>
                                     <NavDropdown.Item as={NavLink} to="profile" activeClassName="active">Lihat Profile</NavDropdown.Item>
-                                    <NavDropdown.Item as={NavLink} to="payment" activeClassName="active">Pembayaran</NavDropdown.Item>
+                                    <NavDropdown.Item as={NavLink} to="payment" activeClassName="active">Premium</NavDropdown.Item>
                                     <NavDropdown.Divider />
                                     <NavDropdown.Item as={NavLink} to="logout" activeClassName="active">
                                         Logout
