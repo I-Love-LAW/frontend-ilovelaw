@@ -35,5 +35,6 @@ class ConvertService {
 
   }
 }
+const convertService = new ConvertService();
 
-export default new ConvertService();
+export default convertService;
