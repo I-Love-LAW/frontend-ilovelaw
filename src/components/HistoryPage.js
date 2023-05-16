@@ -19,8 +19,7 @@ import { Modal, Button } from "react-bootstrap";
 export function HistoryPage() {
   const [isFirstLoggedIn, setIsFirstLoggedIn] = useState(localStorage.getItem("isFirstLoggedIn"));
   const { auth } = useAuth();
-  //   const username = auth?.username;
-  const username = "ujang";
+  const username = auth?.username;
   const [user, setUser] = useState();
   const [history, setHistory] = useState();
   const [loading, setLoading] = useState(true);
