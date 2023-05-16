@@ -29,5 +29,6 @@ class ConvertService {
     return axios.get(LAST_HISTORY_URL);
   }
 }
+const convertService = new ConvertService();
 
-export default new ConvertService();
+export default convertService;
