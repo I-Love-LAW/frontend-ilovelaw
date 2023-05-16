@@ -37,6 +37,7 @@ export const initialState: AuthState = {
 interface AuthAction extends CustomAction {
   setAuth?: AuthModel
   updateAuth?: string
+  updateRoles?: string[]
 }
 
 let decodedAccess: TokenDecode | undefined
@@ -90,6 +91,13 @@ const authReducer = (state = initialState, action: AuthAction) => {
         refresh: undefined,
         username: undefined,
         roles: undefined
+      }
+    case ActionType.UPDATE_ROLES_USER:
+      if (!action.updateRoles) return state
+      roles = action.updateRoles ? action.updateRoles : undefined;
+      return {
+        ...state,
+        roles
       }
     default:
       return state

@@ -20,3 +20,10 @@ export function removeTokenAction() {
     type: ActionType.REMOVE_AUTH_TOKEN,
   }
 }
+
+export function updateRolesAction(payload: string[]) {
+  return {
+    type: ActionType.UPDATE_ROLES_USER,
+    updateRoles: payload
+  }
+}

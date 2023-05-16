@@ -8,8 +8,8 @@ import {
   useRef,
 } from 'react'
 import {LayoutSplashScreen} from '../../metronic/MetronicSplashScreen'
-import {AuthModel} from './_models'
-import * as authHelper from './AuthHelpers'
+import {AuthModel} from '../../core/_models'
+import * as authHelper from '../../core/Helpers'
 import UserService from "../../../services/UserService";
 import { AuthState } from '../../../redux/reducers/authReducer'
 import { useSelector } from 'react-redux'
@@ -24,6 +24,7 @@ type AuthContextProps = {
   username: string | undefined,
   saveAuth: (auth: AuthModel | undefined) => void,
   logout: () => void
+  updateRoles: (roles: string[]) => void
 }
 
 const initAuthContextPropsState = {
@@ -31,6 +32,7 @@ const initAuthContextPropsState = {
   username: undefined,
   saveAuth: () => {},
   logout: () => {},
+  updateRoles: () => {},
 }
 
 const AuthContext = createContext<AuthContextProps>(initAuthContextPropsState)
@@ -52,10 +54,13 @@ const AuthProvider: FC<WithChildren> = ({children}) => {
   const logout = () => {
     saveAuth(undefined)
   }
+  const updateRoles = (roles: string[]) => {
+    authHelper.updateRoles(roles)
+  }
 
   // @ts-ignore
   return (
-    <AuthContext.Provider value={{auth, username, saveAuth, logout}}>
+    <AuthContext.Provider value={{auth, username, saveAuth, logout, updateRoles}}>
       {children}
     </AuthContext.Provider>
   )
