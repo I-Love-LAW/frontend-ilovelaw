@@ -28,6 +28,12 @@ class ConvertService {
     const LAST_HISTORY_URL = CONVERT_URL + "/history/last/" + username;
     return axios.get(LAST_HISTORY_URL);
   }
+
+  deleteHistory(id, username) {
+    const DELETE_HISTORY_URL = CONVERT_URL + "/history/" + username + "?id=" + id;
+    return axios.delete(DELETE_HISTORY_URL);
+
+  }
 }
 const convertService = new ConvertService();
 

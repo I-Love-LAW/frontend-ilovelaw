@@ -6,6 +6,7 @@ import { ConvertPage } from "../components/ConvertPage";
 import { HistoryPage } from "../components/HistoryPage";
 import { ProfilePage } from "../components/ProfilePage";
 import FooterComponent from "../components/Footer";
+import { PaymentPage } from "../components/PaymentPage";
 
 const PrivateRoutes = () => {
   return (
@@ -16,7 +17,7 @@ const PrivateRoutes = () => {
             <Route index path="convert" element={<ConvertPage />} />
             <Route index path="history" element={<HistoryPage />} />
             <Route index path="profile" element={<ProfilePage />} />
-            <Route index path="payment" element={<></>} />
+            <Route index path="payment" element={<PaymentPage/>} />
             <Route index path="notification" element={<></>} />
             <Route path="*" element={<Navigate to="" />} />
         </Routes>
