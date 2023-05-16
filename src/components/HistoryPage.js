@@ -13,6 +13,7 @@ import Box from '@mui/material/Box';
 import { useNavigate, Link } from "react-router-dom";
 import { HiDownload } from "react-icons/hi";
 import { RiDeleteBin6Line } from "react-icons/ri";
+import { BsFillCheckCircleFill } from "react-icons/bs"
 import { Modal, Button } from "react-bootstrap";
 
 export function HistoryPage() {
@@ -139,8 +140,8 @@ export function HistoryPage() {
           <thead>
             <tr className="col justify-content-center">
               <th>File Name</th>
-              <th>Progress</th>
-              <th>Action</th>
+              <th className="text-center">Progress</th>
+              <th className="text-center">Action</th>
             </tr>
           </thead>
           <tbody>
@@ -150,11 +151,21 @@ export function HistoryPage() {
             history.map((entry) => (
               <tr key={entry.id}>
                 <td>{entry.filename}</td>
-                <td>{entry.progress * 100}%</td>
                 <td>
-                  <Link to={entry.result} key={entry.id}><HiDownload size={18}/></Link>
-                  {entry.progress === 1 &&
-                  <button className="btn btn-link" onClick={() => showDeleteModal(entry.id, entry.filename)}><RiDeleteBin6Line size={18} color="red"/></button>}
+                  <div className="d-flex justify-content-center">
+                    {entry.progress !== 1
+                    && <text>{entry.progress * 100}%</text>}
+                    {entry.progress === 1 
+                    && <BsFillCheckCircleFill color="green"/>}
+                  </div>
+                </td>
+                <td>
+                  <div className="d-flex justify-content-center">
+                    {entry.progress === 1 
+                    && <div className="pt-1"><Link to={entry.result} key={entry.id} target="_blank"><HiDownload size={18}/></Link></div>}
+                    {entry.progress === 1 
+                    && <button className="btn btn-link" onClick={() => showDeleteModal(entry.id, entry.filename)}><RiDeleteBin6Line size={18} color="red"/></button>}
+                  </div>
                 </td>
               </tr>
             ))}
