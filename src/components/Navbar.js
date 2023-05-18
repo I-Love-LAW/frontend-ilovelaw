@@ -4,7 +4,7 @@ import React from "react";
 import { NavLink } from "react-router-dom";
 import {useAuth} from "./auth";
 
-function NavbarComponent() {
+function NavbarComponent({notifier, newNotifier}) {
     const {auth} = useAuth()
     const currentUser = auth?.username
 

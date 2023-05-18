@@ -59,3 +59,51 @@ code {
   color: #000 !important;
   background-color: #ddebff !important;
 }
+
+.notifier-box {
+  box-shadow:
+          0 2.8px 2.2px rgba(0, 0, 0, 0.034),
+          0 6.7px 5.3px rgba(0, 0, 0, 0.048),
+          0 12.5px 10px rgba(0, 0, 0, 0.06),
+          0 100px 80px rgba(0, 0, 0, 0.12);
+  margin: 40px 50px;
+  height: 600px;
+  padding: 10px;
+  display: flex;
+  flex-direction: row;
+  border: 0.1px var(--bs-card-border-color);
+  border-style: outset;
+  border-radius: 10px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.notifier-content {
+  width: 80%;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 5%;
+}
+
+.notifier {
+  height: 80%;
+  border: 1px solid #000;
+  border-radius: 5px;
+  overflow-y: scroll;
+  padding: 0;
+}
+
+.bg-light-warning {
+  background-color: #fff8dd!important;
+  margin: 15px;
+}
+
+.bg-light-success {
+  background-color: #e8fff3!important;
+  margin: 15px;
+}
+
+.bg-light-info {
+  background-color: #f8f5ff!important;
+  margin: 15px;
+}
