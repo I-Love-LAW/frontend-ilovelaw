@@ -27,7 +27,7 @@ function AppRoutes() {
                     <Route path='logout' element={<Logout />} />
                     {currentUser ? (
                         <>
-                            <Route path='*' element={<PrivateRoutes />} />
+                            <Route path='*' element={<PrivateRoutes username={currentUser}/>} />
                         </>
                     ) : (
                         <>
