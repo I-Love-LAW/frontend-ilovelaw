@@ -2,7 +2,7 @@ import { Navigate, Route, Routes } from "react-router-dom";
 import NavbarComponent from "../components/Navbar";
 import React from "react";
 import { HomePage } from "../components/HomePage";
-import { ConvertPage } from "../components/ConvertPage";
+import { ConvertPage } from "../components/convert/ConvertPage";
 import { HistoryPage } from "../components/HistoryPage";
 import { ProfilePage } from "../components/ProfilePage";
 import FooterComponent from "../components/Footer";

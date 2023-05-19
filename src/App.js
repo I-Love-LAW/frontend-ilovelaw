@@ -1,43 +1,15 @@
-import React from "react"
-import 'bootstrap/dist/css/bootstrap.min.css';
-import {
-  BrowserRouter as Router,
-  Routes,
-  Route,
-  Navigate
-} from 'react-router-dom'
-import {
-    ErrorsPage,
-    Logout
-} from "./components";
-import { useAuth } from './components/auth';
-import {PrivateRoutes} from "./routes/PrivateRoutes";
-import {AuthRoutes} from "./routes/AuthRoutes";
+import {Suspense} from 'react'
+import {Outlet} from 'react-router-dom'
+import {AuthInit} from "./components/auth";
 
-
-function App() {
-    const {auth} = useAuth()
-    const currentUser = auth?.username
-
+const App = () => {
     return (
-        <Router>
-            <Routes>
-                <Route path='error/*' element={<ErrorsPage />} />
-                <Route path='logout' element={<Logout />} />
-                {currentUser ? (
-                    <>
-                        <Route path='*' element={<PrivateRoutes />} />
-                    </>
-                ) : (
-                    <>
-                        <Route path='auth/*' element={<AuthRoutes />} />
-                        <Route path='*' element={<Navigate to='/auth' />} />
-                    </>
-                )}
-                <Route path='*' element={<Navigate to='' />} />
-            </Routes>
-        </Router>
+        <Suspense >
+            <AuthInit>
+                <Outlet />
+            </AuthInit>
+        </Suspense>
     )
 }
 
-export default App;
+export {App}

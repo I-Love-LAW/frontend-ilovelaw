@@ -1,24 +1,46 @@
 import React from "react";
 import { useEffect, useState } from "react";
-import Alert from "react-bootstrap/Alert";
 import { useAuth } from "./auth";
 import UserService from "../services/UserService";
 import PaymentService from "../services/PaymentService";
-import { useNavigate } from "react-router-dom";
+import OrchestraService from "../services/OrchestraService";
 import ConvertIcon from "./convertIcon.svg"
 import swal from 'sweetalert'
 import LoadingOverlay from 'react-loading-overlay-ts';
+import {useFile} from "./convert";
 
 export function PaymentPage() {
   const [isFirstLoggedIn, setIsFirstLoggedIn] = useState(localStorage.getItem("isFirstLoggedIn"));
-  const { auth } = useAuth();
+  const { auth, updateRoles } = useAuth();
   const username = auth?.username;
   const isPremium = auth?.roles == "PREMIUM_USER" ? true : false;
   const [user, setUser] = useState();
   const [payment, setPayment] = useState();
   const [loading, setLoading] = useState(false);
   const [loadingText, setLoadingText] = useState("");
-  const navigate = useNavigate();
+  const { file, deleteFile } = useFile();
+  const [isConvertOrchestra, setIsConvertOrchestra] = useState(false);
+  const [data, setData] = useState();
+
+    useEffect(() => {
+        const api = async () => {
+            if (file?.isOrchestra) {
+                setIsConvertOrchestra(file?.isOrchestra)
+                const data = {
+                    fileInput: file?.fileInput,
+                    imageFormat: file?.imageFormat,
+                    singleOrMultiple: file?.singleOrMultiple,
+                    colorType: file?.colorType,
+                    dpi: file?.dpi,
+                    username: file?.username
+                }
+                setData(data)
+                deleteFile()
+            }
+        };
+
+        api();
+    }, [username]);
 
   function formatDate(dateString) {
     const date = new Date(dateString);
@@ -43,47 +65,62 @@ export function PaymentPage() {
         dangerMode: false,
     }).then(async (ubah) => {
         if (ubah) {
-            try {
-                setLoading(true);
-                setLoadingText("Making payment ...");
-                const payment = await PaymentService.makePayment(username);
-                if (payment.status == 200) {
-                    try {
-                        setLoadingText("Upgrading your membership ...");
-                        const upgrade = await UserService.upgradeMembership(username);
-                        if (upgrade.status == 200) {
-                            setLoading(false);
-                            await swal({
-                                title: "Success!",
-                                text: "You are now a Premium user of ilovelaw!",
-                                icon: "success",
-                                buttons: [false, "Close"]
-                            });
-                            window.location.reload();
-                            // window.location.href = "/new-page";
-                        }
-                    }
-                    catch (error) {
+            setLoading(true);
+            if (isConvertOrchestra) {
+                try {
+                    setLoadingText("Upgrading your membership and Convert PDFs ...");
+                    // TODO kirim data ke orchestra
+                    // panggil orhestra yang melakukan payment upgrade convert
+                    const response = await OrchestraService.orchestraConvert(data)
+                    if (response.status === 200) {
                         setLoading(false);
-                        console.log(error.response);
                         await swal({
-                            title: "Failed!",
-                            text: "Failed to upgrade your membership",
-                            icon: "warning",
-                            buttons: [false, "Close"],
+                            title: "Success!",
+                            text: "You are now a Premium user of ilovelaw!",
+                            icon: "success",
+                            buttons: [false, "Close"]
                         });
+                        updateRoles(["PREMIUM_USER"])
+                        window.location.href = "/history";
                     }
+                } catch (error) {
+                    setLoading(false);
+                    console.log(error.response);
+                    await swal({
+                        title: "Failed!",
+                        text: "Failed to upgrade your membership and Convert PDFs",
+                        icon: "warning",
+                        buttons: [false, "Close"],
+                    });
                 }
             }
-            catch (error) {
-                setLoading(false);
-                console.log(error.response);
-                await swal({
-                    title: "Failed!",
-                    text: "Failed to make payment",
-                    icon: "warning",
-                    buttons: [false, "Close"],
-                });
+            else {
+                try {
+                    setLoadingText("Upgrading your membership ...");
+                    // TODO kirim data ke orchestra
+                    // panggil orhestra yang melakukan payment upgrade
+                    const response = await OrchestraService.orchestra(data)
+                    if (response.status === 200) {
+                        setLoading(false);
+                        await swal({
+                            title: "Success!",
+                            text: "You are now a Premium user of ilovelaw!",
+                            icon: "success",
+                            buttons: [false, "Close"]
+                        });
+                        updateRoles(["PREMIUM_USER"])
+                        window.location.reload();
+                    }
+                } catch (error) {
+                    setLoading(false);
+                    console.log(error.response);
+                    await swal({
+                        title: "Failed!",
+                        text: "Failed to upgrade your membership and Convert PDFs",
+                        icon: "warning",
+                        buttons: [false, "Close"],
+                    });
+                }
             }
         }
     });
@@ -119,10 +156,6 @@ export function PaymentPage() {
     api();
   }, [username]);
 
-  const handleClose = () => {
-    setIsFirstLoggedIn(false);
-  };
-
   return (
     <LoadingOverlay
     className="h-100"
@@ -131,11 +164,6 @@ export function PaymentPage() {
     text={loadingText}
     >
     <section className="container">
-      {isFirstLoggedIn && (
-        <Alert variant="success" show={isFirstLoggedIn} onClose={handleClose} dismissible>
-          <strong>Login!</strong> Anda berhasil masuk ke sistem.
-        </Alert>
-      )}
 
     <div className="payment-page">
         <div className="payment-header">

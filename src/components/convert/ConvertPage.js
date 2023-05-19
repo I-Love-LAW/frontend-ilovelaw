@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from "react";
-import Alert from "react-bootstrap/Alert";
-import { useAuth } from "./auth";
+import { useAuth } from "../auth";
 import { useFormik } from "formik";
-import UserService from "../services/UserService";
-import ConvertService from "../services/ConvertService";
-import CircularProgressWithLabel from "./CircularStatic";
+import UserService from "../../services/UserService";
+import ConvertService from "../../services/ConvertService";
+import CircularProgressWithLabel from "../CircularStatic";
 import { useNavigate } from "react-router-dom";
 import { useDropzone } from "react-dropzone";
+import {useFile} from "./index";
+import swal from "sweetalert";
 
 export function ConvertPage() {
   const [isFirstLoggedIn, setIsFirstLoggedIn] = useState(localStorage.getItem("isFirstLoggedIn"));
@@ -16,6 +17,8 @@ export function ConvertPage() {
   const [loading, setLoading] = useState(false);
   const [progress, setProgress] = useState("");
   const navigate = useNavigate();
+  const [canConvert, setCanConvert] = useState(false);
+  const { saveFile } = useFile()
 
   const initialValues = {
     fileInput: null,
@@ -71,52 +74,73 @@ export function ConvertPage() {
     api();
   }, [username]);
 
-  const handleClose = () => {
-    setIsFirstLoggedIn(false);
-  };
+  useEffect(() => {
+    const api = async () => {
+      const history = (await ConvertService.getHistory(username)).data;
+      const totalHistory = history.length;
+
+      setCanConvert(await UserService.getConvertEligibility(username, totalHistory));
+    };
+
+    api();
+  }, [username]);
+
 
   const formik = useFormik({
     initialValues,
     onSubmit: async (values, { setStatus, setSubmitting }) => {
       setLoading(true);
-      try {
-        for (const file of values.fileInput) {
-          ConvertService.convert(file, values.imageFormat, values.singleOrMultiple, values.colorType, values.dpi, values.username)
-            .then((res) => {
-              alert(res.data);
-            })
-            .catch((e) => console.log(e.response.data));
-        }
-
-        const intervalId = setInterval(async () => {
-          const { data: result } = await ConvertService.getLastHistory(username);
-          setProgress(result.progress * 100);
-          if (result.progress === 1) {
-            clearInterval(intervalId);
-            navigate("/history", { replace: true });
+      if (canConvert) {
+        try {
+          for (const file of values.fileInput) {
+            ConvertService.convert(file, values.imageFormat, values.singleOrMultiple, values.colorType, values.dpi, values.username)
+                .then((res) => {
+                  alert(res.data);
+                })
+                .catch((e) => console.log(e.response.data));
           }
-        }, 200);
-      } catch (error) {
-        if (error.response && error.response.status === 401) {
-          setStatus("Sedih T_T");
-        } else {
-          setStatus("Terjadi kesalahan tak terduga, silahkan coba lagi");
+
+          const intervalId = setInterval(async () => {
+            const { data: result } = await ConvertService.getLastHistory(username);
+            setProgress(result.progress * 100);
+            if (result.progress === 1) {
+              clearInterval(intervalId);
+              navigate("/history", { replace: true });
+            }
+          }, 200);
+        } catch (error) {
+          if (error.response && error.response.status === 401) {
+            setStatus("Sedih T_T");
+          } else {
+            setStatus("Terjadi kesalahan tak terduga, silahkan coba lagi");
+          }
+          setSubmitting(false);
+          setLoading(false);
         }
-        setSubmitting(false);
-        setLoading(false);
+      } else {
+        await swal({
+          title: "Warning!",
+          text: "Akun Anda sudah melebihi batas konversi. Anda perlu update menjadi akun premium",
+          icon: "warning",
+          buttons: [
+            "Tidak, Batalkan", "Ya, Lanjutkan"
+          ],
+          dangerMode: true,
+        }).then((ubah) => {
+          if (ubah) {
+            let dataFile = values
+            dataFile['isOrchestra'] = true
+            saveFile(dataFile)
+
+            window.location.href = "/payment"
+          }
+        });
       }
     },
   });
 
   return (
     <section className="container">
-      {isFirstLoggedIn && (
-        <Alert variant="success" show={isFirstLoggedIn} onClose={handleClose} dismissible>
-          <strong>Login!</strong> Anda berhasil masuk ke sistem.
-        </Alert>
-      )}
-
-      {user && <h4>Selamat datang, {user.name}!</h4>}
 
       <div className="container">
         <div className="row justify-content-center">

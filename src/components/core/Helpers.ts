@@ -1,6 +1,7 @@
-import {AuthModel} from './_models'
-import { store } from '../../../redux/store'
-import { removeTokenAction, setAuthTokenAction, updateAccessTokenAction } from '../../../redux/actions/authActions'
+import {AuthModel, FileModel} from './_models'
+import { store } from '../../redux/store'
+import { removeTokenAction, setAuthTokenAction, updateAccessTokenAction, updateRolesAction } from '../../redux/actions/authActions'
+import { setFileAction, removeFileAction } from '../../redux/actions/fileActions'
 
 const setAuth = (auth: AuthModel) => {
     store.dispatch(setAuthTokenAction(auth))
@@ -11,8 +12,19 @@ const refreshAuth = (access: string) => {
 }
 
 const removeAuth = () => {
-
     store.dispatch(removeTokenAction())
+}
+
+const updateRoles = (roles: string[]) => {
+    store.dispatch(updateRolesAction(roles))
+}
+
+const setFile = (file: FileModel) => {
+    store.dispatch(setFileAction(file))
+}
+
+const removeFile = () => {
+    store.dispatch(removeFileAction())
 }
 
 const getAuth = () => {
@@ -41,4 +53,4 @@ export function setupAxios(axios: any) {
     )
 }
 
-export {getAuth, setAuth, refreshAuth, removeAuth}
+export {getAuth, setAuth, refreshAuth, removeAuth, updateRoles, setFile, removeFile}

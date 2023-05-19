@@ -1,8 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
-import App from './App';
+import AppRoutes from "./routes/AppRoutes";
 import {AuthProvider, setupAxios} from './components/auth'
+import {FileProvider} from "./components/convert";
 import axios from 'axios'
 import { Provider } from "react-redux"
 import { store } from './redux/store'
@@ -14,7 +15,9 @@ root.render(
     <React.StrictMode>
         <Provider store={store}>
             <AuthProvider>
-                <App />
+                <FileProvider>
+                    <AppRoutes />
+                </FileProvider>
             </AuthProvider>
         </Provider>
     </React.StrictMode>
