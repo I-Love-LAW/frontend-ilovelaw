@@ -32,7 +32,6 @@ class ConvertService {
   deleteHistory(id, username) {
     const DELETE_HISTORY_URL = CONVERT_URL + "/history/" + username + "?id=" + id;
     return axios.delete(DELETE_HISTORY_URL);
-
   }
 }
 const convertService = new ConvertService();
