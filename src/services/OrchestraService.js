@@ -1,18 +1,31 @@
 import axios from "axios";
-import {PAYMENT_BACKEND_URL} from "./Config";
+import { ORCHESTRA_BACKEND_URL } from "./Config";
 
-const ORCHESTRA_URL = PAYMENT_BACKEND_URL("api/orchester")
+const ORCHESTRA_URL = ORCHESTRA_BACKEND_URL("api/orchester");
 
 class OrchestraService {
-    orchestraConvert(data) {
-        const URL = ORCHESTRA_URL + '/payment-upgrade-convert';
-        return axios.post(URL, data);
+  async orchestraConvert(data) {
+    const URL = ORCHESTRA_URL + "/payment-upgrade-convert";
+    let fileInputs = [];
+    for (const name in data.fileInput) {
+      let file = await fetch(data.fileInput[name])
+        .then((r) => r.blob())
+        .then((blobFile) => new File([blobFile], name, { type: "application/pdf" }));
+      fileInputs.push(file);
     }
+    data.fileInput = fileInputs;
 
-    orchestra(data) {
-        const URL = ORCHESTRA_URL + '/payment-upgrade';
-        return axios.post(URL, data);
-    }
+    return axios.post(URL, data, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
+  }
+
+  orchestra(data) {
+    const URL = ORCHESTRA_URL + "/payment-upgrade";
+    return axios.post(URL, data);
+  }
 }
 
 export default new OrchestraService();
