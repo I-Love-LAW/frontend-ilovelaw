@@ -6,7 +6,7 @@ import ConvertService from "../../services/ConvertService";
 import CircularProgressWithLabel from "../CircularStatic";
 import { useNavigate } from "react-router-dom";
 import { useDropzone } from "react-dropzone";
-import {useFile} from "./index";
+import { useFile } from "./index";
 import swal from "sweetalert";
 
 export function ConvertPage() {
@@ -18,7 +18,7 @@ export function ConvertPage() {
   const [progress, setProgress] = useState("");
   const navigate = useNavigate();
   const [canConvert, setCanConvert] = useState(false);
-  const { saveFile } = useFile()
+  const { saveFile } = useFile();
 
   const initialValues = {
     fileInput: null,
@@ -78,13 +78,12 @@ export function ConvertPage() {
     const api = async () => {
       const history = (await ConvertService.getHistory(username)).data;
       const totalHistory = history.length;
-
-      setCanConvert(await UserService.getConvertEligibility(username, totalHistory));
+      const result = await UserService.getConvertEligibility(username, totalHistory);
+      setCanConvert(result.data.canConvert);
     };
 
     api();
   }, [username]);
-
 
   const formik = useFormik({
     initialValues,
@@ -94,10 +93,10 @@ export function ConvertPage() {
         try {
           for (const file of values.fileInput) {
             ConvertService.convert(file, values.imageFormat, values.singleOrMultiple, values.colorType, values.dpi, values.username)
-                .then((res) => {
-                  alert(res.data);
-                })
-                .catch((e) => console.log(e.response.data));
+              .then((res) => {
+                alert(res.data);
+              })
+              .catch((e) => console.log(e.response.data));
           }
 
           const intervalId = setInterval(async () => {
@@ -122,17 +121,20 @@ export function ConvertPage() {
           title: "Warning!",
           text: "Akun Anda sudah melebihi batas konversi. Anda perlu update menjadi akun premium",
           icon: "warning",
-          buttons: [
-            "Tidak, Batalkan", "Ya, Lanjutkan"
-          ],
+          buttons: ["Tidak, Batalkan", "Ya, Lanjutkan"],
           dangerMode: true,
         }).then((ubah) => {
           if (ubah) {
-            let dataFile = values
-            dataFile['isOrchestra'] = true
-            saveFile(dataFile)
+            let dataFile = values;
+            let fileURLList = {};
+            for (const file of dataFile.fileInput) {
+              fileURLList[file.name] = window.URL.createObjectURL(file);
+            }
+            dataFile["isOrchestra"] = true;
+            dataFile["fileInput"] = fileURLList;
+            saveFile(dataFile);
 
-            window.location.href = "/payment"
+            navigate("/payment");
           }
         });
       }
@@ -141,7 +143,6 @@ export function ConvertPage() {
 
   return (
     <section className="container">
-
       <div className="container">
         <div className="row justify-content-center">
           {!loading && (
