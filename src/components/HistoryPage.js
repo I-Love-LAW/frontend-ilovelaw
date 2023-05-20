@@ -2,7 +2,6 @@ import React from "react";
 import { useEffect, useState } from "react";
 import Alert from "react-bootstrap/Alert";
 import { useAuth } from "./auth";
-import UserService from "../services/UserService";
 import ConvertService from "../services/ConvertService";
 import CircularProgress from '@mui/material/CircularProgress';
 import Box from '@mui/material/Box';
@@ -88,14 +87,6 @@ export function HistoryPage() {
       };
     }
   }, [isFirstLoggedIn]);
-
-  useEffect(() => {
-    const api = async () => {
-      setUser((await UserService.getInfo(username)).data);
-    };
-
-    api();
-  }, [username]);
 
   useEffect(() => {
     const api = async () => {
