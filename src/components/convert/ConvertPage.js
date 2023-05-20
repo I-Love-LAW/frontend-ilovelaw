@@ -67,6 +67,14 @@ export function ConvertPage() {
 
   useEffect(() => {
     const api = async () => {
+      setUser((await UserService.getInfo(username)).data);
+    };
+
+    api();
+  }, [username]);
+
+  useEffect(() => {
+    const api = async () => {
       const history = (await ConvertService.getHistory(username)).data;
       const totalHistory = history.length;
       const result = await UserService.getConvertEligibility(username, totalHistory);
