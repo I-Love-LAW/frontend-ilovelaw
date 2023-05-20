@@ -44,7 +44,7 @@ export function ProfilePage() {
         <section className="container">
             <div className="card mt-5" style={{width: "100%"}}>
                 <div className="card-header text-center" style={{backgroundColor: "rgb(170,194,236)"}}>
-                    <h3 className="my-auto">Update Profil</h3>
+                    <h3 className="my-auto">Profil</h3>
                 </div>
                 <div className="card-body">
                         <div className="row my-3">

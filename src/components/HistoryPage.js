@@ -2,12 +2,8 @@ import React from "react";
 import { useEffect, useState } from "react";
 import Alert from "react-bootstrap/Alert";
 import { useAuth } from "./auth";
-import * as Yup from "yup";
-import clsx from "clsx";
-import { useFormik } from "formik";
 import UserService from "../services/UserService";
 import ConvertService from "../services/ConvertService";
-import CircularProgressWithLabel from "./CircularStatic";
 import CircularProgress from '@mui/material/CircularProgress';
 import Box from '@mui/material/Box';
 import { useNavigate, Link } from "react-router-dom";
@@ -20,10 +16,8 @@ export function HistoryPage() {
   const [isFirstLoggedIn, setIsFirstLoggedIn] = useState(localStorage.getItem("isFirstLoggedIn"));
   const { auth } = useAuth();
   const username = auth?.username;
-  const [user, setUser] = useState();
   const [history, setHistory] = useState();
   const [loading, setLoading] = useState(true);
-  const [progress, setProgress] = useState("");
   const navigate = useNavigate();
   const [filename, setFilename] = useState(null);
   const [id, setId] = useState(null);
@@ -106,27 +100,14 @@ export function HistoryPage() {
   useEffect(() => {
     const api = async () => {
       setHistory((await ConvertService.getHistory(username)).data);
-      console.log(history);
       setLoading(false);
     };
 
     api();
   }, []);
 
-  const handleClose = () => {
-    setIsFirstLoggedIn(false);
-  };
-
   return (
     <section className="container">
-      {isFirstLoggedIn && (
-        <Alert variant="success" show={isFirstLoggedIn} onClose={handleClose} dismissible>
-          <strong>Login!</strong> Anda berhasil masuk ke sistem.
-        </Alert>
-      )}
-
-      {user && <h4>Selamat datang, {user.name}!</h4>}
-
       <div className="container">
         <div className="row justify-content-center">
           <div className="my-5">
