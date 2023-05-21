@@ -132,7 +132,7 @@ export function ConvertPage() {
 
   return (
     <LoadingOverlay className="h-100" active={loading} spinner text={loadingText}>
-      <section className="container">
+      <section id="section" className="container mb-3">
         <div className="row justify-content-center">
           <div className="col-md-6 mt-3">
             <h2>PDF to Image Converter</h2>

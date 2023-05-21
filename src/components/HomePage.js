@@ -37,7 +37,7 @@ export function HomePage() {
     };
 
     return (
-        <>
+        <div id="section">
             {isFirstLoggedIn && (
                 <Alert variant="success" show={isFirstLoggedIn} onClose={handleClose} dismissible>
                     <strong>Login!</strong> Anda berhasil masuk ke sistem.
@@ -125,7 +125,7 @@ export function HomePage() {
                     </div>
                 </div>
             </section>
-        </>
+        </div>
     );
 
 }
