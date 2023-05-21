@@ -24,6 +24,11 @@ class ConvertService {
     return axios.get(HISTORY_URL);
   }
 
+  getConvertHistoryById(username, id) {
+    const HISTORY_BY_ID_URL = CONVERT_URL + "/history/" + username + "/" + id;
+    return axios.get(HISTORY_BY_ID_URL);
+  }
+
   getLastHistory(username) {
     const LAST_HISTORY_URL = CONVERT_URL + "/history/last/" + username;
     return axios.get(LAST_HISTORY_URL);

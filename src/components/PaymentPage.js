@@ -12,7 +12,7 @@ export function PaymentPage() {
   const [isFirstLoggedIn, setIsFirstLoggedIn] = useState(localStorage.getItem("isFirstLoggedIn"));
   const { auth, updateRoles } = useAuth();
   const username = auth?.username;
-  const isPremium = auth?.roles == "PREMIUM_USER" ? true : false;
+  const isPremium = auth?.roles === "PREMIUM_USER" ? true : false;
   const [user, setUser] = useState();
   const [payment, setPayment] = useState();
   const [loading, setLoading] = useState(false);
@@ -126,7 +126,7 @@ export function PaymentPage() {
       };
       api();
     }
-  }, [isPremium]);
+  }, [isPremium, username]);
 
   useEffect(() => {
     if (isFirstLoggedIn) {
@@ -172,7 +172,7 @@ export function PaymentPage() {
                   </div>
                   <div className="d-flex flex-column justify-content-center">
                     <div className="d-inline-flex pt-4 pb-2 justify-content-center">
-                      <img style={{ width: "150px", height: "150px" }} src={ConvertIcon} />
+                      <img style={{ width: "150px", height: "150px" }} src={ConvertIcon} alt="premium-logo" />
                     </div>
                     <div className="flex-column d-inline-flex p-2">
                       <h4 className="text-center" style={{ fontWeight: "bold" }}>
