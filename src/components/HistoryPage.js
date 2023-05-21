@@ -97,18 +97,8 @@ export function HistoryPage() {
     api();
   }, [username]);
 
-  const handleClose = () => {
-    setIsFirstLoggedIn(false);
-  };
-
   return (
     <section className="container">
-      {isFirstLoggedIn && (
-        <Alert variant="success" show={isFirstLoggedIn} onClose={handleClose} dismissible>
-          <strong>Login!</strong> Anda berhasil masuk ke sistem.
-        </Alert>
-      )}
-
       <div className="container">
         <div className="row justify-content-center">
           <div className="my-5">

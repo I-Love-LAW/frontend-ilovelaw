@@ -16,7 +16,7 @@ export function ConvertPage() {
   const [loading, setLoading] = useState(false);
   const [loadingText, setLoadingText] = useState("");
   const navigate = useNavigate();
-  const [canConvert, setCanConvert] = useState(false);
+  const [canConvert, setCanConvert] = useState("false");
   const { saveFile } = useFile();
 
   const initialValues = {
@@ -70,7 +70,7 @@ export function ConvertPage() {
       const history = (await ConvertService.getHistory(username)).data;
       const totalHistory = history.length;
       const result = await UserService.getConvertEligibility(username, totalHistory);
-      setCanConvert(result.data.canConvert);
+      setCanConvert(result.data.canConvert.toString());
     };
 
     api();
@@ -80,7 +80,7 @@ export function ConvertPage() {
     initialValues,
     onSubmit: async (values, { setStatus, setSubmitting }) => {
       setLoading(true);
-      if (!canConvert) {
+      if (canConvert === "true") {
         try {
           setLoadingText("Sending files to Server");
           for (const file of values.fileInput) {
