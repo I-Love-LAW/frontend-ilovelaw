@@ -11,6 +11,7 @@ import { RiDeleteBin6Line } from "react-icons/ri";
 import { BsFillCheckCircleFill } from "react-icons/bs";
 import { Modal, Button } from "react-bootstrap";
 import WithLabelExample from "./ProgressBar";
+import moment from 'moment'
 
 export function HistoryPage() {
   const [isFirstLoggedIn, setIsFirstLoggedIn] = useState(localStorage.getItem("isFirstLoggedIn"));
@@ -98,7 +99,7 @@ export function HistoryPage() {
   }, [username]);
 
   return (
-    <section className="container">
+    <section id="section" className="container">
       <div className="container">
         <div className="row justify-content-center">
           <div className="my-5">
@@ -111,6 +112,7 @@ export function HistoryPage() {
             <thead>
               <tr className="col justify-content-center">
                 <th>File Name</th>
+                <th>Date</th>
                 <th className="text-center">Progress</th>
                 <th className="text-center">Action</th>
               </tr>
@@ -134,6 +136,7 @@ export function HistoryPage() {
                 history.map((entry) => (
                   <tr key={entry.id}>
                     <td>{entry.filename}</td>
+                    <td>{moment(entry.dateTime).format("L")}</td>
                     <td>
                       <div className="d-flex justify-content-center">
                         {entry.progress !== 1 && <WithLabelExample id={entry.id} />}

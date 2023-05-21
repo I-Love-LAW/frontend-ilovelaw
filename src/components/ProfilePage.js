@@ -41,7 +41,7 @@ export function ProfilePage() {
     }
 
     return (
-        <section className="container">
+        <section id="section" className="container">
             <div className="card mt-5" style={{width: "100%"}}>
                 <div className="card-header text-center" style={{backgroundColor: "rgb(170,194,236)"}}>
                     <h3 className="my-auto">Profil</h3>

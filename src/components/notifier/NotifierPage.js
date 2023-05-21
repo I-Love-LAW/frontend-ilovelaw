@@ -6,7 +6,7 @@ const NotifierPage = ({notifier, newNotifier}) => {
     'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember']
 
     return(
-        <div className="container">
+        <div id="section" className="container">
             <div className="row">
                 <div className="col-2"></div>
                 <div className="col-8">
