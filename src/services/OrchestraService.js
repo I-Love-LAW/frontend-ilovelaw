@@ -27,5 +27,6 @@ class OrchestraService {
     return axios.post(URL, data);
   }
 }
+const orchestraService = new OrchestraService();
 
-export default new OrchestraService();
+export default orchestraService;

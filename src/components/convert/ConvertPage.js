@@ -3,19 +3,18 @@ import { useAuth } from "../auth";
 import { useFormik } from "formik";
 import UserService from "../../services/UserService";
 import ConvertService from "../../services/ConvertService";
-import CircularProgressWithLabel from "../CircularStatic";
 import { useNavigate } from "react-router-dom";
 import { useDropzone } from "react-dropzone";
 import { useFile } from "./index";
 import swal from "sweetalert";
+import LoadingOverlay from "react-loading-overlay-ts";
 
 export function ConvertPage() {
   const [isFirstLoggedIn, setIsFirstLoggedIn] = useState(localStorage.getItem("isFirstLoggedIn"));
   const { auth } = useAuth();
   const username = auth?.username;
-  const [user, setUser] = useState();
   const [loading, setLoading] = useState(false);
-  const [progress, setProgress] = useState("");
+  const [loadingText, setLoadingText] = useState("");
   const navigate = useNavigate();
   const [canConvert, setCanConvert] = useState(false);
   const { saveFile } = useFile();
@@ -68,14 +67,6 @@ export function ConvertPage() {
 
   useEffect(() => {
     const api = async () => {
-      setUser((await UserService.getInfo(username)).data);
-    };
-
-    api();
-  }, [username]);
-
-  useEffect(() => {
-    const api = async () => {
       const history = (await ConvertService.getHistory(username)).data;
       const totalHistory = history.length;
       const result = await UserService.getConvertEligibility(username, totalHistory);
@@ -89,24 +80,22 @@ export function ConvertPage() {
     initialValues,
     onSubmit: async (values, { setStatus, setSubmitting }) => {
       setLoading(true);
-      if (canConvert) {
+      if (!canConvert) {
         try {
+          setLoadingText("Sending files to Server");
           for (const file of values.fileInput) {
             ConvertService.convert(file, values.imageFormat, values.singleOrMultiple, values.colorType, values.dpi, values.username)
-              .then((res) => {
-                alert(res.data);
-              })
+              .then(() => {})
               .catch((e) => console.log(e.response.data));
           }
-
-          const intervalId = setInterval(async () => {
-            const { data: result } = await ConvertService.getLastHistory(username);
-            setProgress(result.progress * 100);
-            if (result.progress === 1) {
-              clearInterval(intervalId);
-              navigate("/history", { replace: true });
-            }
-          }, 200);
+          setLoading(false);
+          await swal({
+            title: "Success!",
+            text: "The file is being converted!",
+            icon: "success",
+            buttons: [false, "Close"],
+          });
+          navigate("/history", { replace: true });
         } catch (error) {
           if (error.response && error.response.status === 401) {
             setStatus("Sedih T_T");
@@ -142,68 +131,64 @@ export function ConvertPage() {
   });
 
   return (
-    <section className="container">
-      <div className="container">
+    <LoadingOverlay className="h-100" active={loading} spinner text={loadingText}>
+      <section className="container">
         <div className="row justify-content-center">
-          {!loading && (
-            <div className="col-md-6 mt-3">
-              <h2>PDF to Image Converter</h2>
-              <p>Warning: This process can take up to a minute depending on file-size</p>
-              <form onSubmit={formik.handleSubmit}>
-                <section className="container">
-                  <div {...getRootProps({ className: "dropzone border border-2 border-secondary rounded p-5 text-center" })}>
-                    <input {...getInputProps()} />
-                    <p>Drag 'n' drop some files here, or click to select files</p>
-                    <em>(Only *.pdf file will be accepted)</em>
-                  </div>
-                  <aside>
-                    <p>Accepted files</p>
-                    <ul>{acceptedFileItems}</ul>
-                    <p>Rejected files</p>
-                    <ul>{fileRejectionItems}</ul>
-                  </aside>
-                </section>
-                <div className="form-group mb-2">
-                  <label>Image Format</label>
-                  <select {...formik.getFieldProps("imageFormat")} className="form-control" name="imageFormat">
-                    <option value="png">PNG</option>
-                    <option value="jpg">JPG</option>
-                    <option value="gif">GIF</option>
-                  </select>
+          <div className="col-md-6 mt-3">
+            <h2>PDF to Image Converter</h2>
+            <p>Warning: This process can take up to a minute depending on file-size</p>
+            <form onSubmit={formik.handleSubmit}>
+              <section className="container">
+                <div {...getRootProps({ className: "dropzone border border-2 border-secondary rounded p-5 text-center" })}>
+                  <input {...getInputProps()} />
+                  <p>Drag 'n' drop some files here, or click to select files</p>
+                  <em>(Only *.pdf file will be accepted)</em>
                 </div>
-                <div className="form-group mb-2">
-                  <label>Image result type</label>
-                  <select {...formik.getFieldProps("singleOrMultiple")} className="form-control" name="singleOrMultiple">
-                    <option value="single">Single Big Image</option>
-                    <option value="multiple">Multiple Images</option>
-                  </select>
-                </div>
-                <div className="form-group mb-2">
-                  <label>Colour type</label>
-                  <select {...formik.getFieldProps("colorType")} className="form-control" name="colorType">
-                    <option value="color">Colour</option>
-                    <option value="greyscale">Greyscale</option>
-                    <option value="blackwhite">Black and White (May lose data!)</option>
-                  </select>
-                </div>
-                <div className="form-group mb-3">
-                  <label htmlFor="dpi">DPI:</label>
-                  <input {...formik.getFieldProps("dpi")} type="number" name="dpi" className="form-control" id="dpi" min="1" max="100" step="1" required="" />
-                </div>
-                <div className="form-group" hidden>
-                  <label htmlFor="username">Username:</label>
-                  <input {...formik.getFieldProps("username")} type="text" name="username" className="form-control" id="username" />
-                </div>
-                <button type="submit" id="submitBtn" className="btn btn-primary">
-                  Convert
-                </button>
-              </form>
-            </div>
-          )}
-
-          {loading && <CircularProgressWithLabel value={parseFloat(progress)} />}
+                <aside>
+                  <p>Accepted files</p>
+                  <ul>{acceptedFileItems}</ul>
+                  <p>Rejected files</p>
+                  <ul>{fileRejectionItems}</ul>
+                </aside>
+              </section>
+              <div className="form-group mb-2">
+                <label>Image Format</label>
+                <select {...formik.getFieldProps("imageFormat")} className="form-control" name="imageFormat">
+                  <option value="png">PNG</option>
+                  <option value="jpg">JPG</option>
+                  <option value="gif">GIF</option>
+                </select>
+              </div>
+              <div className="form-group mb-2">
+                <label>Image result type</label>
+                <select {...formik.getFieldProps("singleOrMultiple")} className="form-control" name="singleOrMultiple">
+                  <option value="single">Single Big Image</option>
+                  <option value="multiple">Multiple Images</option>
+                </select>
+              </div>
+              <div className="form-group mb-2">
+                <label>Colour type</label>
+                <select {...formik.getFieldProps("colorType")} className="form-control" name="colorType">
+                  <option value="color">Colour</option>
+                  <option value="greyscale">Greyscale</option>
+                  <option value="blackwhite">Black and White (May lose data!)</option>
+                </select>
+              </div>
+              <div className="form-group mb-3">
+                <label htmlFor="dpi">DPI:</label>
+                <input {...formik.getFieldProps("dpi")} type="number" name="dpi" className="form-control" id="dpi" min="1" max="100" step="1" required="" />
+              </div>
+              <div className="form-group" hidden>
+                <label htmlFor="username">Username:</label>
+                <input {...formik.getFieldProps("username")} type="text" name="username" className="form-control" id="username" />
+              </div>
+              <button type="submit" id="submitBtn" className="btn btn-primary">
+                Convert
+              </button>
+            </form>
+          </div>
         </div>
-      </div>
-    </section>
+      </section>
+    </LoadingOverlay>
   );
 }
