@@ -13,11 +13,10 @@ export function ConvertPage() {
   const [isFirstLoggedIn, setIsFirstLoggedIn] = useState(localStorage.getItem("isFirstLoggedIn"));
   const { auth } = useAuth();
   const username = auth?.username;
-  const [user, setUser] = useState();
   const [loading, setLoading] = useState(false);
   const [progress, setProgress] = useState("");
   const navigate = useNavigate();
-  const [canConvert, setCanConvert] = useState(false);
+  const [canConvert, setCanConvert] = useState("false");
   const { saveFile } = useFile();
 
   const initialValues = {
@@ -68,18 +67,10 @@ export function ConvertPage() {
 
   useEffect(() => {
     const api = async () => {
-      setUser((await UserService.getInfo(username)).data);
-    };
-
-    api();
-  }, [username]);
-
-  useEffect(() => {
-    const api = async () => {
       const history = (await ConvertService.getHistory(username)).data;
       const totalHistory = history.length;
       const result = await UserService.getConvertEligibility(username, totalHistory);
-      setCanConvert(result.data.canConvert);
+      setCanConvert(result.data.canConvert.toString());
     };
 
     api();
@@ -89,7 +80,7 @@ export function ConvertPage() {
     initialValues,
     onSubmit: async (values, { setStatus, setSubmitting }) => {
       setLoading(true);
-      if (canConvert) {
+      if (canConvert === "true") {
         try {
           for (const file of values.fileInput) {
             ConvertService.convert(file, values.imageFormat, values.singleOrMultiple, values.colorType, values.dpi, values.username)
