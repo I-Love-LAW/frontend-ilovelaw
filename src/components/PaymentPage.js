@@ -9,7 +9,9 @@ import LoadingOverlay from "react-loading-overlay-ts";
 import { useFile } from "./convert";
 
 export function PaymentPage() {
-  const [isFirstLoggedIn, setIsFirstLoggedIn] = useState(localStorage.getItem("isFirstLoggedIn"));
+  const [isFirstLoggedIn, setIsFirstLoggedIn] = useState(
+    localStorage.getItem("isFirstLoggedIn")
+  );
   const { auth, updateRoles } = useAuth();
   const username = auth?.username;
   const isPremium = auth?.roles === "PREMIUM_USER" ? true : false;
@@ -22,6 +24,7 @@ export function PaymentPage() {
   const [data, setData] = useState();
 
   useEffect(() => {
+    document.title = "I Love LAW - Go Premium";
     const api = async () => {
       if (file?.isOrchestra) {
         setIsConvertOrchestra(file?.isOrchestra);
@@ -150,7 +153,12 @@ export function PaymentPage() {
   }, [username]);
 
   return (
-    <LoadingOverlay className="h-100" active={loading} spinner text={loadingText}>
+    <LoadingOverlay
+      className="h-100"
+      active={loading}
+      spinner
+      text={loadingText}
+    >
       <section className="container">
         <div className="payment-page">
           <div className="payment-header">
@@ -172,13 +180,22 @@ export function PaymentPage() {
                   </div>
                   <div className="d-flex flex-column justify-content-center">
                     <div className="d-inline-flex pt-4 pb-2 justify-content-center">
-                      <img style={{ width: "150px", height: "150px" }} src={ConvertIcon} alt="premium-logo" />
+                      <img
+                        style={{ width: "150px", height: "150px" }}
+                        src={ConvertIcon}
+                        alt="premium-logo"
+                      />
                     </div>
                     <div className="flex-column d-inline-flex p-2">
-                      <h4 className="text-center" style={{ fontWeight: "bold" }}>
+                      <h4
+                        className="text-center"
+                        style={{ fontWeight: "bold" }}
+                      >
                         Unlimited Converts
                       </h4>
-                      <p className="text-center">Convert PDFs as much as you want with no limit</p>
+                      <p className="text-center">
+                        Convert PDFs as much as you want with no limit
+                      </p>
                     </div>
                   </div>
                 </div>
@@ -227,7 +244,9 @@ export function PaymentPage() {
                       Plan includes : Unlimited Converts
                       <br />
                     </text>
-                    {payment && <text>Date joined : {formatDate(payment.date)}</text>}
+                    {payment && (
+                      <text>Date joined : {formatDate(payment.date)}</text>
+                    )}
                   </div>
                 </div>
               )}
