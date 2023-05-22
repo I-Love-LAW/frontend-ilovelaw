@@ -15,7 +15,7 @@ function FooterComponent() {
         >
           © 2023 Copyright:
           <a href="https://mdbootstrap.com/" target="_blank" rel="noreferrer">
-            I Love LAW
+              LawConverter
           </a>
         </div>
       </footer>

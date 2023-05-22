@@ -2,7 +2,7 @@ import { useEffect } from "react";
 
 const NotifierPage = ({ notifier, newNotifier }) => {
   useEffect(() => {
-    document.title = "I Love LAW - Notification";
+    document.title = "LawConverter - Notification";
   }, []);
 
   const month = [

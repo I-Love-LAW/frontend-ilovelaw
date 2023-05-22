@@ -4,7 +4,7 @@ import React from "react";
 import { NavLink } from "react-router-dom";
 import {useAuth} from "./auth";
 
-function NavbarComponent({notifier, newNotifier}) {
+function NavbarComponent() {
     const {auth} = useAuth()
     const currentUser = auth?.username
 
@@ -12,7 +12,7 @@ function NavbarComponent({notifier, newNotifier}) {
         <>
             <Navbar bg="blue" variant="dark">
                 <Container>
-                    <Navbar.Brand href="/">I Love Law</Navbar.Brand>
+                    <Navbar.Brand href="/">LawConverter</Navbar.Brand>
                     <Navbar.Collapse id="navbarScroll">
                         {currentUser &&
                             <>

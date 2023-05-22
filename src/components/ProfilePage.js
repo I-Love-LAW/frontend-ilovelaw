@@ -9,7 +9,7 @@ export function ProfilePage() {
   const [name, setName] = useState();
 
   useEffect(() => {
-    document.title = "I Love LAW - Profile";
+    document.title = "LawConverter - Profile";
     const api = async () => {
       const user = (await UserService.getInfo(username)).data;
       setName(user.name);

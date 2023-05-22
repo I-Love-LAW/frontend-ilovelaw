@@ -37,7 +37,7 @@ const RegistrationPage = () => {
   const { saveAuth } = useAuth();
 
   useEffect(() => {
-    document.title = "I Love LAW - Sign Up";
+    document.title = "LawConverter - Sign Up";
   }, []);
 
   const formik = useFormik({

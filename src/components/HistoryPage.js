@@ -87,7 +87,7 @@ export function HistoryPage() {
   };
 
   useEffect(() => {
-    document.title = "I Love LAW - History";
+    document.title = "LawConverter - History";
     if (isFirstLoggedIn) {
       const timeoutId = setTimeout(() => {
         localStorage.removeItem("isFirstLoggedIn");

@@ -26,7 +26,7 @@ export function HomePage() {
   }, [isFirstLoggedIn]);
 
   useEffect(() => {
-    document.title = "I Love LAW";
+    document.title = "LawConverter";
     const api = async () => {
       setUser((await UserService.getInfo(username)).data);
     };
@@ -61,9 +61,9 @@ export function HomePage() {
             <div className="row mx-5">
               <div className="col-lg-6">
                 {user ? (
-                    <h2 className="mt-5">Welcome to I Love LAW, {user.name}!</h2>
+                    <h2 className="mt-5">Welcome to LawConverter, {user.name}!</h2>
                 ) : (
-                    <h2 className="mt-5">Welcome to I Love LAW!</h2>
+                    <h2 className="mt-5">Welcome to LawConverter!</h2>
                 )}
                 <h4 className="mb-5 text-black-50">
                   Website Convert PDFs to JPG.
@@ -76,7 +76,7 @@ export function HomePage() {
         <section className="container">
           <div className="d-flex justify-content-center mt-5 mb-5">
             <br />
-            <h2 style={{ color: "#283770" }}>Feature I Love LAW</h2>
+            <h2 style={{ color: "#283770" }}>Feature LawConverter</h2>
             <br />
           </div>
 

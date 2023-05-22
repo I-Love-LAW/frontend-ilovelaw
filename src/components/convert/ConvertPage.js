@@ -61,7 +61,7 @@ export function ConvertPage() {
   ));
 
   useEffect(() => {
-    document.title = "I Love LAW - Convert";
+    document.title = "LawConverter - Convert";
     if (isFirstLoggedIn) {
       const timeoutId = setTimeout(() => {
         localStorage.removeItem("isFirstLoggedIn");

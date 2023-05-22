@@ -33,7 +33,7 @@ export function LoginPage() {
   );
 
   useEffect(() => {
-    document.title = "I Love LAW - Login";
+    document.title = "LawConverter - Login";
     if (isFirstLoggedOut) {
       const timeoutId = setTimeout(() => {
         localStorage.removeItem("isFirstLoggedOut");

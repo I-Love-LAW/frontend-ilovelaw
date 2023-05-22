@@ -22,7 +22,7 @@ export function PaymentPage() {
   const [data, setData] = useState();
 
   useEffect(() => {
-    document.title = "I Love LAW - Go Premium";
+    document.title = "LawConverter - Go Premium";
     const api = async () => {
       if (file?.isOrchestra) {
         setIsConvertOrchestra(file?.isOrchestra);
