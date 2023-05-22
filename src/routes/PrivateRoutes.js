@@ -29,7 +29,7 @@ const PrivateRoutes = ({username}) => {
     }, [username])
 
     const connect = () => {
-        let socket = new SockJS(NOTIFIER_BACKEND_URL("notifier-app"));
+        let socket = new SockJS(NOTIFIER_BACKEND_URL("notifier-service"));
         stompClient = over(socket);
         stompClient.connect({}, onConnected, onError);
     }

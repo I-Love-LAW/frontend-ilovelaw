@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { useAuth } from "./auth";
-import UserService from "../services/UserService";
 import PaymentService from "../services/PaymentService";
 import OrchestraService from "../services/OrchestraService";
 import ConvertIcon from "./convertIcon.svg";
@@ -15,7 +14,6 @@ export function PaymentPage() {
   const { auth, updateRoles } = useAuth();
   const username = auth?.username;
   const isPremium = auth?.roles === "PREMIUM_USER" ? true : false;
-  const [user, setUser] = useState();
   const [payment, setPayment] = useState();
   const [loading, setLoading] = useState(false);
   const [loadingText, setLoadingText] = useState("");
@@ -143,14 +141,6 @@ export function PaymentPage() {
       };
     }
   }, [isFirstLoggedIn]);
-
-  useEffect(() => {
-    const api = async () => {
-      setUser((await UserService.getInfo(username)).data);
-    };
-
-    api();
-  }, [username]);
 
   return (
     <LoadingOverlay
