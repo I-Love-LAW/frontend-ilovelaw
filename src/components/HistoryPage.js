@@ -14,7 +14,9 @@ import WithLabelExample from "./ProgressBar";
 import moment from 'moment'
 
 export function HistoryPage() {
-  const [isFirstLoggedIn, setIsFirstLoggedIn] = useState(localStorage.getItem("isFirstLoggedIn"));
+  const [isFirstLoggedIn, setIsFirstLoggedIn] = useState(
+    localStorage.getItem("isFirstLoggedIn")
+  );
   const { auth } = useAuth();
   const username = auth?.username;
   const [history, setHistory] = useState();
@@ -22,7 +24,8 @@ export function HistoryPage() {
   const navigate = useNavigate();
   const [filename, setFilename] = useState(null);
   const [id, setId] = useState(null);
-  const [displayConfirmationModal, setDisplayConfirmationModal] = useState(false);
+  const [displayConfirmationModal, setDisplayConfirmationModal] =
+    useState(false);
   const [deleteMessage, setDeleteMessage] = useState(null);
   const [deleteSuccessMessage, setDeleteSuccessMessage] = useState(null);
 
@@ -55,7 +58,14 @@ export function HistoryPage() {
     api();
   };
 
-  const DeleteConfirmation = ({ showModal, hideModal, confirmModal, id, name, message }) => {
+  const DeleteConfirmation = ({
+    showModal,
+    hideModal,
+    confirmModal,
+    id,
+    name,
+    message,
+  }) => {
     return (
       <Modal show={showModal} onHide={hideModal}>
         <Modal.Header closeButton>
@@ -77,6 +87,7 @@ export function HistoryPage() {
   };
 
   useEffect(() => {
+    document.title = "I Love LAW - History";
     if (isFirstLoggedIn) {
       const timeoutId = setTimeout(() => {
         localStorage.removeItem("isFirstLoggedIn");
@@ -107,7 +118,9 @@ export function HistoryPage() {
           </div>
         </div>
         <div className="row justify-content-center">
-          {deleteSuccessMessage && <Alert variant="success">{deleteSuccessMessage}</Alert>}
+          {deleteSuccessMessage && (
+            <Alert variant="success">{deleteSuccessMessage}</Alert>
+          )}
           <table>
             <thead>
               <tr className="col justify-content-center">
@@ -121,7 +134,10 @@ export function HistoryPage() {
               {loading && (
                 <tr>
                   <td colSpan={3}>
-                    <Box className="justify-content-center" sx={{ display: "flex" }}>
+                    <Box
+                      className="justify-content-center"
+                      sx={{ display: "flex" }}
+                    >
                       <CircularProgress />
                     </Box>
                   </td>
@@ -139,20 +155,33 @@ export function HistoryPage() {
                     <td>{moment(entry.dateTime).format("L")}</td>
                     <td>
                       <div className="d-flex justify-content-center">
-                        {entry.progress !== 1 && <WithLabelExample id={entry.id} />}
-                        {entry.progress === 1 && <BsFillCheckCircleFill color="green" />}
+                        {entry.progress !== 1 && (
+                          <WithLabelExample id={entry.id} />
+                        )}
+                        {entry.progress === 1 && (
+                          <BsFillCheckCircleFill color="green" />
+                        )}
                       </div>
                     </td>
                     <td>
                       <div className="d-flex justify-content-center">
                         {entry.progress === 1 && (
                           <div className="pt-1">
-                            <Link to={entry.result} key={entry.id} target="_blank">
+                            <Link
+                              to={entry.result}
+                              key={entry.id}
+                              target="_blank"
+                            >
                               <HiDownload size={18} />
                             </Link>
                           </div>
                         )}
-                        <button className="btn btn-link" onClick={() => showDeleteModal(entry.id, entry.filename)}>
+                        <button
+                          className="btn btn-link"
+                          onClick={() =>
+                            showDeleteModal(entry.id, entry.filename)
+                          }
+                        >
                           <RiDeleteBin6Line size={18} color="red" />
                         </button>
                       </div>
@@ -162,7 +191,14 @@ export function HistoryPage() {
             </tbody>
           </table>
         </div>
-        <DeleteConfirmation showModal={displayConfirmationModal} confirmModal={submitDelete} hideModal={hideConfirmationModal} name={filename} id={id} message={deleteMessage} />
+        <DeleteConfirmation
+          showModal={displayConfirmationModal}
+          confirmModal={submitDelete}
+          hideModal={hideConfirmationModal}
+          name={filename}
+          id={id}
+          message={deleteMessage}
+        />
       </div>
     </section>
   );
