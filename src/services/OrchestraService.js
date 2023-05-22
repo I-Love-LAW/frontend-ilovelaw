@@ -22,8 +22,11 @@ class OrchestraService {
     });
   }
 
-  orchestra(data) {
+  orchestra(username) {
     const URL = ORCHESTRA_URL + "/payment-upgrade";
+    const data = {
+      "username" : username
+    }
     return axios.post(URL, data);
   }
 }

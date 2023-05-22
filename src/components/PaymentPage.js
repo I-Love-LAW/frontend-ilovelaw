@@ -92,7 +92,7 @@ export function PaymentPage() {
         } else {
           try {
             setLoadingText("Upgrading your membership ...");
-            OrchestraService.orchestra(data);
+            OrchestraService.orchestra(username);
             setTimeout(async () => {
               setLoading(false);
               await swal({

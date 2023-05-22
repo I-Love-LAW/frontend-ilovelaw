@@ -1,5 +1,5 @@
 export function AUTH_BACKEND_URL(url) {
-  return "http://34.170.243.229/" + url;
+  return "http://34.72.205.219/" + url;
 }
 
 export function CONVERT_BACKEND_URL(url) {
@@ -8,16 +8,16 @@ export function CONVERT_BACKEND_URL(url) {
 
 export function PAYMENT_BACKEND_URL (url) {
   return (
-      "http://localhost:8000/" + url
+      "http://35.224.65.44/" + url
   )
 }
 
 export function NOTIFIER_BACKEND_URL (url) {
   return (
-      "http://localhost:8081/" + url
+      "http://35.238.191.136/" + url
   )
 }
 
 export function ORCHESTRA_BACKEND_URL(url) {
-  return "http://localhost:8001/" + url;
+  return "http://127.0.0.1:8081/" + url;
 }
