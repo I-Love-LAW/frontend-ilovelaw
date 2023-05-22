@@ -108,6 +108,11 @@ code {
   margin: 15px;
 }
 
+.bg-light-danger {
+  background-color: #ffe8ef!important;
+  margin: 15px;
+}
+
 .bg-light-info {
   background-color: #f8f5ff!important;
   margin: 15px;

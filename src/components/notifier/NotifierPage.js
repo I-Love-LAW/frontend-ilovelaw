@@ -30,26 +30,31 @@ const NotifierPage = ({ notifier, newNotifier }) => {
             <div className="notifier-content">
               <ul className="notifier">
                 {[...newNotifier].reverse().map((notif, index) => (
-                  <div
-                    key={index}
-                    className={`d-flex align-items-center ${
-                      notif.status === "SUCCESS"
-                        ? "bg-light-success"
-                        : "bg-light-warning"
-                    } rounded p-4`}
-                  >
-                    <div className="flex-grow-1 me-2">
-                      <span className="fw-bold fs-6">{notif.message}</span>
-                      {notif.status === "SUCCESS" ? (
-                        <span className="fw-bold text-success py-1 d-block">
-                          Success
-                        </span>
-                      ) : (
-                        <span className="fw-bold text-warning py-1 d-block">
-                          On-progress
-                        </span>
-                      )}
-                    </div>
+                    <div
+                        key={index}
+                        className={`d-flex align-items-center 
+                        ${notif.status === 'SUCCESS' 
+                            ? 'bg-light-success' 
+                            : notif.status === 'FAILED' 
+                                ? 'bg-light-danger' 
+                                : 'bg-light-warning'} rounded p-4`}
+                    >
+                      <div className='flex-grow-1 me-2'>
+                        <span className='fw-bold fs-6'>{notif.message}</span>
+                        {notif.status === 'SUCCESS' ? (
+                            <span className="fw-bold text-success py-1 d-block">
+                              Success
+                            </span>
+                        ) : notif.status === 'FAILED' ? (
+                            <span className="fw-bold text-danger py-1 d-block">
+                              Failed
+                            </span>
+                        ) : (
+                            <span className="fw-bold text-warning py-1 d-block">
+                              On-progress
+                            </span>
+                        )}
+                      </div>
                     <span className="text-muted fw-semibold d-block">
                       {notif.date.substring(8, 10)}{" "}
                       {month.at(notif.date.substring(5, 7))}{" "}
@@ -60,26 +65,29 @@ const NotifierPage = ({ notifier, newNotifier }) => {
                 ))}
 
                 {[...notifier].reverse().map((notif, index) => (
-                  <div
-                    key={index}
-                    className={`d-flex align-items-center ${
-                      notif.status === "SUCCESS"
-                        ? "bg-light-success"
-                        : "bg-light-warning"
+                    <div key={index} className={`d-flex align-items-center ${notif.status === 'SUCCESS'
+                        ? 'bg-light-success'
+                        : notif.status === 'FAILED'
+                            ? 'bg-light-danger'
+                            : 'bg-light-warning'
                     } rounded p-4`}
-                  >
-                    <div className="flex-grow-1 me-2">
-                      <span className="fw-bold fs-6">{notif.message}</span>
-                      {notif.status === "SUCCESS" ? (
-                        <span className="fw-bold text-success py-1 d-block">
-                          Success
-                        </span>
-                      ) : (
-                        <span className="fw-bold text-warning py-1 d-block">
-                          On-progress
-                        </span>
-                      )}
-                    </div>
+                    >
+                      <div className='flex-grow-1 me-2'>
+                        <span className='fw-bold fs-6'>{notif.message}</span>
+                        {notif.status === 'SUCCESS' ? (
+                            <span className="fw-bold text-success py-1 d-block">
+                              Success
+                            </span>
+                        ) : notif.status === 'FAILED' ? (
+                            <span className="fw-bold text-danger py-1 d-block">
+                              Failed
+                            </span>
+                        ) : (
+                            <span className="fw-bold text-warning py-1 d-block">
+                              On-progress
+                            </span>
+                        )}
+                      </div>
                     <span className="text-muted fw-semibold d-block">
                       {notif.date.substring(8, 10)}{" "}
                       {month.at(notif.date.substring(5, 7))}{" "}
