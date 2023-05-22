@@ -1,7 +1,6 @@
-import {FC} from 'react'
 import {Link} from 'react-router-dom'
 
-const Error500: FC = () => {
+const Error500 = () => {
   return (
     <>
       {/* begin::Title */}

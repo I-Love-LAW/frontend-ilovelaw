@@ -1,7 +1,6 @@
-import {FC} from 'react'
 import {Link} from 'react-router-dom'
 
-const Error404: FC = () => {
+const Error404 = () => {
   return (
     <>
       {/* begin::Title */}

@@ -156,7 +156,7 @@ export function ConvertPage() {
       spinner
       text={loadingText}
     >
-      <section className="container">
+      <section id="section" className="container">
         <div className="row justify-content-center">
           <div className="col-md-6 mt-3">
             <h2>PDF to Image Converter</h2>

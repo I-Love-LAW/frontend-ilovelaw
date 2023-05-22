@@ -14,8 +14,7 @@ function FooterComponent() {
           style={{ backgroundColor: "rgb(231 239 255)" }}
         >
           © 2023 Copyright:
-          <a> </a>
-          <a href="https://mdbootstrap.com/" target="_blank">
+          <a href="https://mdbootstrap.com/" target="_blank" rel="noreferrer">
             I Love LAW
           </a>
         </div>

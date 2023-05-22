@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from "react";
-import { useAuth } from "./auth";
+import React, {useEffect, useState} from "react";
+import {useAuth} from "./auth";
 import PaymentService from "../services/PaymentService";
 import OrchestraService from "../services/OrchestraService";
 import ConvertIcon from "./convertIcon.svg";
 import swal from "sweetalert";
 import LoadingOverlay from "react-loading-overlay-ts";
-import { useFile } from "./convert";
+import {useFile} from "./convert";
 
 export function PaymentPage() {
   const [isFirstLoggedIn, setIsFirstLoggedIn] = useState(
@@ -13,7 +13,7 @@ export function PaymentPage() {
   );
   const { auth, updateRoles } = useAuth();
   const username = auth?.username;
-  const isPremium = auth?.roles === "PREMIUM_USER" ? true : false;
+  const isPremium = auth?.roles[0] === "PREMIUM_USER";
   const [payment, setPayment] = useState();
   const [loading, setLoading] = useState(false);
   const [loadingText, setLoadingText] = useState("");
@@ -40,7 +40,7 @@ export function PaymentPage() {
     };
 
     api();
-  }, [username]);
+  }, [file, deleteFile]);
 
   function formatDate(dateString) {
     const date = new Date(dateString);
@@ -50,8 +50,7 @@ export function PaymentPage() {
       month: "short",
       year: "numeric",
     };
-    const formattedDate = new Intl.DateTimeFormat("en", options).format(date);
-    return formattedDate;
+    return new Intl.DateTimeFormat("en", options).format(date);
   }
 
   const submitPayment = async () => {
@@ -149,7 +148,7 @@ export function PaymentPage() {
       spinner
       text={loadingText}
     >
-      <section className="container">
+      <section id="section" className="container">
         <div className="payment-page">
           <div className="payment-header">
             <div className="payment-header-title">
