@@ -14,7 +14,7 @@ export function PAYMENT_BACKEND_URL (url) {
 
 export function NOTIFIER_BACKEND_URL (url) {
   return (
-      "http://35.238.191.136/" + url
+      "http://104.155.133.217/" + url
   )
 }
 
